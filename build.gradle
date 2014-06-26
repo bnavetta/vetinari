@@ -1,0 +1,23 @@
+allprojects {
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
+
+	group = 'org.vetinari'
+	version = '0.0.1-SNAPSHOT'
+}
+
+subprojects {
+	apply plugin: 'groovy'
+
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.0-rc-2'
+}
