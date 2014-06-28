@@ -2,7 +2,7 @@ package org.vetinari
 
 import com.typesafe.config.Config
 import groovy.transform.Immutable
-import groovy.transform.builder.Builder
+import groovy.transform.TupleConstructor
 import org.vetinari.render.Renderer
 import org.vetinari.template.TemplateEngine
 
@@ -11,8 +11,8 @@ import java.nio.file.Path
 /**
  * A content page in the site.
  */
-@Builder
 @Immutable
+@TupleConstructor
 public class Page
 {
 	/**
@@ -20,7 +20,6 @@ public class Page
 	 * the data can come from other sources, such as YAML, and that the {@link Config} interface was chosen because it has a
 	 * nice API.
 	 */
-	@Delegate // make frontmatter metadata available in templates
 	Config metadata
 
 	/**
@@ -37,6 +36,6 @@ public class Page
 
 	public String getTitle()
 	{
-		return metadata.get("title").toString()
+		return metadata.getString("title");
 	}
 }

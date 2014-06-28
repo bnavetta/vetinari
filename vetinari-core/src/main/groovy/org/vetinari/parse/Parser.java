@@ -3,13 +3,13 @@ package org.vetinari.parse;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.io.CharStreams;
-import groovy.util.ConfigObject;
-import groovy.util.ConfigSlurper;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.vetinari.Configuration;
 import org.vetinari.Page;
+import org.vetinari.parse.config.ConfigParser;
 import org.vetinari.render.Renderer;
 import org.vetinari.template.TemplateEngine;
 
@@ -18,10 +18,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -29,21 +27,23 @@ import java.util.Set;
  */
 public class Parser
 {
-	public static final String FRONT_MATTER_DELIM = "+++";
-	public static final String TEMPLATE_KEY = "template";
+	public static final String TEMPLATE_KEY = "template_engine";
 	public static final String RENDERER_KEY = "renderer";
 
 	private final Set<TemplateEngine> templateEngines;
 	private final Set<Renderer> renderers;
+	private final Set<ConfigParser> configParsers;
 
 	private final Configuration configuration;
 
 	@Inject
-	public Parser(Set<TemplateEngine> templateEngines, Set<Renderer> renderers, Configuration configuration)
+	public Parser(Configuration configuration, Set<TemplateEngine> templateEngines, Set<Renderer> renderers, Set<ConfigParser> configParsers)
 	{
 		this.templateEngines = templateEngines;
 		this.renderers = renderers;
+		this.configParsers = configParsers;
 		this.configuration = configuration;
+
 	}
 
 	public Page parse(Path source) throws IOException
@@ -52,28 +52,35 @@ public class Parser
 
 		try(BufferedReader reader = Files.newBufferedReader(source, configuration.getContentEncoding()))
 		{
-			ConfigObject metadata = new ConfigObject();
+			Config metadata = ConfigFactory.empty();
 
-			final String firstLine = reader.readLine();
-			if(firstLine.trim().endsWith(FRONT_MATTER_DELIM))
+			final String firstLine = reader.readLine().trim();
+			for(ConfigParser parser : configParsers)
 			{
-				final StringBuilder frontmatter = new StringBuilder();
-				String line = reader.readLine();
-				while(line != null && !FRONT_MATTER_DELIM.equals(line))
+				if(parser.getStartDelimiter().equals(firstLine))
 				{
-					frontmatter.append(line).append('\n');
-					line = reader.readLine();
-				}
+					final StringBuilder frontmatter = new StringBuilder();
+					String line = reader.readLine();
+					while(line != null && !parser.getEndDelimiter().equals(line.trim()))
+					{
+						frontmatter.append(line).append('\n');
+						line = reader.readLine();
+					}
 
-				//TODO: ConfigSlurper is nice and powerful, but it could be a bit unfamiliar
-				// Typesafe Config has ConfigFactory.parseString(), which I could use for
-				// HOCON, and then support JSON and YAML with different delimiters
-				metadata = new ConfigSlurper().parse(frontmatter.toString());
+					metadata = parser.parse(frontmatter.toString());
+					break;
+				}
 			}
 
 			String content = CharStreams.toString(reader);
 
-			Renderer renderer = detect(source, )
+			String rendererName = metadata.hasPath(RENDERER_KEY) ? metadata.getString(RENDERER_KEY) : null;
+			Renderer renderer = detect(source, rendererName, renderers, configuration.getDefaultRenderer());
+
+			String templateEngineName = metadata.hasPath(TEMPLATE_KEY) ? metadata.getString(TEMPLATE_KEY) : null;
+			TemplateEngine templateEngine = detect(source, templateEngineName, templateEngines, configuration.getDefaultTemplateEngine());
+
+			return new Page(metadata, relative, templateEngine, renderer);
 		}
 	}
 
