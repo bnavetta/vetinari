@@ -7,7 +7,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 
 /**
- * Core settings for a Vetinari build.
+ * Core settings for a Vetinari build. Note that this defines settings needed to load and build the site, whereas the
+ * site settings provide information for pages, like the site title and author.
  */
 public class Configuration
 {
@@ -18,6 +19,8 @@ public class Configuration
 	private Path templateRoot;
 
 	private Path outputRoot;
+
+	private Path siteConfig;
 
 	private Renderer defaultRenderer;
 	private TemplateEngine defaultTemplateEngine;
@@ -51,7 +54,6 @@ public class Configuration
 
 	/**
 	 * Returns the path that generated files will be stored in.
-	 * @return
 	 */
 	public Path getOutputRoot()
 	{
@@ -63,6 +65,9 @@ public class Configuration
 		this.outputRoot = outputRoot;
 	}
 
+	/**
+	 * Returns the character encoding used for all content files.
+	 */
 	public Charset getContentEncoding()
 	{
 		return contentEncoding;
@@ -73,6 +78,9 @@ public class Configuration
 		this.contentEncoding = contentEncoding;
 	}
 
+	/**
+	 * Returns the renderer that will be used when no renderer is specified for a page.
+	 */
 	public Renderer getDefaultRenderer()
 	{
 		return defaultRenderer;
@@ -83,6 +91,9 @@ public class Configuration
 		this.defaultRenderer = defaultRenderer;
 	}
 
+	/**
+	 * Returns the template engine that will be used when none is specified for a page.
+	 */
 	public TemplateEngine getDefaultTemplateEngine()
 	{
 		return defaultTemplateEngine;
@@ -91,5 +102,18 @@ public class Configuration
 	public void setDefaultTemplateEngine(TemplateEngine defaultTemplateEngine)
 	{
 		this.defaultTemplateEngine = defaultTemplateEngine;
+	}
+
+	/**
+	 * Returns the path to the site configuration file.
+	 */
+	public Path getSiteConfig()
+	{
+		return siteConfig;
+	}
+
+	public void setSiteConfig(Path siteConfig)
+	{
+		this.siteConfig = siteConfig;
 	}
 }
