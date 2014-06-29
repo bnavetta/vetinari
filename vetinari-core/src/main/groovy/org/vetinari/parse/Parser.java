@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -43,7 +42,6 @@ public class Parser
 		this.renderers = renderers;
 		this.configParsers = configParsers;
 		this.configuration = configuration;
-
 	}
 
 	public Page parse(Path source) throws IOException
@@ -52,25 +50,7 @@ public class Parser
 
 		try(BufferedReader reader = Files.newBufferedReader(source, configuration.getContentEncoding()))
 		{
-			Config metadata = ConfigFactory.empty();
-
-			final String firstLine = reader.readLine().trim();
-			for(ConfigParser parser : configParsers)
-			{
-				if(parser.getStartDelimiter().equals(firstLine))
-				{
-					final StringBuilder frontmatter = new StringBuilder();
-					String line = reader.readLine();
-					while(line != null && !parser.getEndDelimiter().equals(line.trim()))
-					{
-						frontmatter.append(line).append('\n');
-						line = reader.readLine();
-					}
-
-					metadata = parser.parse(frontmatter.toString());
-					break;
-				}
-			}
+			Config metadata = extractMetadata(reader);
 
 			String content = CharStreams.toString(reader);
 
@@ -82,6 +62,30 @@ public class Parser
 
 			return new Page(metadata, relative, templateEngine, renderer);
 		}
+	}
+
+	private Config extractMetadata(BufferedReader reader) throws IOException
+	{
+		Config metadata = ConfigFactory.empty();
+
+		final String firstLine = reader.readLine().trim();
+		for(ConfigParser parser : configParsers)
+		{
+			if(parser.getStartDelimiter().equals(firstLine))
+			{
+				final StringBuilder frontMatter = new StringBuilder();
+				String line = reader.readLine();
+				while(line != null && !parser.getEndDelimiter().equals(line.trim()))
+				{
+					frontMatter.append(line).append('\n');
+					line = reader.readLine();
+				}
+				metadata = parser.parse(frontMatter.toString());
+				break;
+			}
+		}
+
+		return metadata;
 	}
 
 	private <T extends Engine> T detect(Path path, String name, Iterable<T> candidates, T defaultImplementation)
