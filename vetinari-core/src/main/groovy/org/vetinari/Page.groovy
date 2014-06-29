@@ -38,4 +38,13 @@ public class Page
 	{
 		return metadata.getString("title");
 	}
+
+	/**
+	 * The identifier of a page is its path without any file extensions. For example, {@code <content root>/foo/bar.md.hb} would be {@code foo/bar}.
+	 */
+	public String getIdentifier()
+	{
+		String pathString = path.toString();
+		return pathString.substring(0, pathString.indexOf('.'));
+	}
 }
