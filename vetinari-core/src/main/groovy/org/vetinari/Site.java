@@ -51,6 +51,7 @@ public class Site
 
 		pages = pagesBuilder.build();
 
+		// TODO: add ConfigParser.parseFile() and use that
 		siteConfig = ConfigFactory.parseFileAnySyntax(configuration.getSiteConfig().toFile());
 	}
 

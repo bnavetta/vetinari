@@ -2,6 +2,8 @@ package org.vetinari.render;
 
 import org.vetinari.parse.Engine;
 
+import java.io.Writer;
+import java.nio.file.Path;
 import java.util.Collection;
 
 /**
@@ -9,5 +11,5 @@ import java.util.Collection;
  */
 public interface Renderer extends Engine
 {
-
+	public String render(String source, Writer out);
 }
