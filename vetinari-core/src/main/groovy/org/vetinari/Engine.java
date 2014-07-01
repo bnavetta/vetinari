@@ -1,4 +1,4 @@
-package org.vetinari.parse;
+package org.vetinari;
 
 /**
  * Some kind of engine that will be applied to content. This interface is mainly to help

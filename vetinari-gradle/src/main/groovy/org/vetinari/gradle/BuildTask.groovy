@@ -9,10 +9,9 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import org.vetinari.BaseModule
 import org.vetinari.Configuration
 import org.vetinari.SiteBuilder
-import org.vetinari.parse.ParseModule
+import org.vetinari.VetinariModule
 
 /**
  * Build a site
@@ -56,13 +55,9 @@ class BuildTask extends DefaultTask
 			return Class.forName(m.toString()).newInstance()
 		}
 
-		if(!realModules.any { m -> m instanceof ParseModule})
+		if(!realModules.any { m -> m instanceof VetinariModule })
 		{
-			realModules << new ParseModule()
-		}
-		if(!realModules.any { m -> m instanceof BaseModule })
-		{
-			realModules << new BaseModule()
+			realModules << new VetinariModule()
 		}
 
 		realModules << new ConfigModule(getConfiguration())

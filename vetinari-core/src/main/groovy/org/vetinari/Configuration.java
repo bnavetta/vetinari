@@ -22,10 +22,6 @@ public class Configuration
 
 	private Path siteConfig;
 
-	//TODO: move these to Site
-	private Renderer defaultRenderer;
-	private TemplateEngine defaultTemplateEngine;
-
 	/**
 	 * Returns the path storing content files.
 	 */
@@ -77,32 +73,6 @@ public class Configuration
 	public void setContentEncoding(Charset contentEncoding)
 	{
 		this.contentEncoding = contentEncoding;
-	}
-
-	/**
-	 * Returns the renderer that will be used when no renderer is specified for a page.
-	 */
-	public Renderer getDefaultRenderer()
-	{
-		return defaultRenderer;
-	}
-
-	public void setDefaultRenderer(Renderer defaultRenderer)
-	{
-		this.defaultRenderer = defaultRenderer;
-	}
-
-	/**
-	 * Returns the template engine that will be used when none is specified for a page.
-	 */
-	public TemplateEngine getDefaultTemplateEngine()
-	{
-		return defaultTemplateEngine;
-	}
-
-	public void setDefaultTemplateEngine(TemplateEngine defaultTemplateEngine)
-	{
-		this.defaultTemplateEngine = defaultTemplateEngine;
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package org.vetinari.parse.config;
+package org.vetinari.config;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;

@@ -3,17 +3,11 @@ package org.vetinari;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
-import org.vetinari.parse.Parser;
-import org.vetinari.template.Context;
 import org.vetinari.template.Template;
-import org.vetinari.template.TemplateEngine;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -26,51 +20,34 @@ public class SiteBuilder
 {
 	private final Configuration configuration;
 
-	// Components needed to build the site
-	private final Parser pageParser;
+	private final SiteLoader siteLoader;
 
-	// Extension points
-	private final Set<TemplateEngine> templateEngines;
-	private final Map<String, BiFunction<Object[], Context, String>> templateFunctions;
-
-	private Context templateContext;
 	private Site site;
 
 	@Inject
-	public SiteBuilder(Configuration configuration, Parser pageParser,
-	                   Set<TemplateEngine> templateEngines, Map<String, BiFunction<Object[], Context, String>> templateFunctions)
+	public SiteBuilder(Configuration configuration, SiteLoader siteLoader)
 	{
 		this.configuration = configuration;
-		this.pageParser = pageParser;
-		this.templateEngines = templateEngines;
-		this.templateFunctions = templateFunctions;
+		this.siteLoader = siteLoader;
 	}
 
 	/*
 	Steps to compile a site:
 	 */
 
-	// Step 1: Load the pages
-	private Site loadSite() throws IOException
-	{
-		Site site = new Site(configuration, pageParser);
-		site.load();
-		return site;
-	}
-
-	// Step 2: Templating
+	// Step 1: Templating
 	private Stream<BuildingPage> templatePages(Stream<BuildingPage> pages)
 	{
 		return pages.map(bp -> {
-			final ImmutableMap<String, Object> variables = ImmutableMap.of("site", templateContext.getSite(), "page", bp.page);
+			final ImmutableMap<String, Object> variables = ImmutableMap.of("site", site, "page", bp.page);
 			//TODO: extension point for additional variables
 
-			bp.update(bp.page.getTemplateEngine().compile(bp.currentContent, templateContext).render(variables));
+			bp.update(bp.page.getTemplateEngine().compile(bp.currentContent, site).render(variables));
 			return bp;
 		});
 	}
 
-	// Step 3: Render pages
+	// Step 2: Render pages
 	private Stream<BuildingPage> renderPages(Stream<BuildingPage> pages)
 	{
 		return pages.map(bp -> {
@@ -79,11 +56,11 @@ public class SiteBuilder
 		});
 	}
 
-	// Step 4: Apply layouts (layouts don't get rendered - have to be HTML)
+	// Step 3: Apply layouts (layouts don't get rendered - have to be HTML)
 	private Stream<BuildingPage> layoutPages(Stream<BuildingPage> pages)
 	{
 		return pages.map(bp -> {
-			Template layoutTemplate = templateContext.getTemplate(Objects.firstNonNull(bp.page.getLayout(), site.getDefaultLayout()));
+			Template layoutTemplate = site.getTemplate(Objects.firstNonNull(bp.page.getLayout(), site.getDefaultLayout()));
 			final ImmutableMap<String, Object> variables = ImmutableMap.of("site", site, "page", bp.page, "content", bp.currentContent);
 			bp.update(layoutTemplate.render(variables));
 			return bp;
@@ -93,8 +70,7 @@ public class SiteBuilder
 	public void build() throws IOException
 	{
 		// Initialize parameters
-		site = loadSite();
-		templateContext = new Context(configuration, templateEngines, site, templateFunctions);
+		site = siteLoader.load(configuration);
 
 		// Convert to page stream
 		// In theory, I can do parallel builds by using parallelStream() instead of stream()

@@ -1,6 +1,6 @@
 package org.vetinari.render;
 
-import org.vetinari.parse.Engine;
+import org.vetinari.Engine;
 
 /**
  * A {@code Renderer} converts input markup, like Markdown, and generates HTML content.
