@@ -8,6 +8,7 @@ allprojects {
 
 subprojects {
 	apply plugin: 'groovy'
+	apply plugin: 'maven-publish'
 
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
@@ -15,6 +16,19 @@ subprojects {
 	repositories {
 		jcenter()
 		mavenCentral()
+	}
+
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				from components.java
+			}
+		}
+		repositories {
+			maven {
+				url "$rootProject.buildDir/repo"
+			}
+		}
 	}
 }
 

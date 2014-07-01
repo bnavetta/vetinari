@@ -11,8 +11,7 @@ import java.nio.file.Path
 /**
  * A content page in the site.
  */
-@Immutable
-@TupleConstructor
+//@Immutable
 public class Page
 {
 	/**
@@ -31,6 +30,15 @@ public class Page
 	Renderer renderer
 
 	String content
+
+	public Page(Config metadata, Path path, TemplateEngine templateEngine, Renderer renderer, String content)
+	{
+		this.metadata = metadata
+		this.path = path
+		this.templateEngine = templateEngine
+		this.renderer = renderer
+		this.content = content
+	}
 
 	public String getTitle()
 	{

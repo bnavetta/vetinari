@@ -1,0 +1,17 @@
+buildscript {
+	repositories {
+		jcenter()
+		maven { url "../build/repo" } 
+	}	
+
+	dependencies {
+		classpath "org.vetinari:vetinari-gradle:0.0.1-SNAPSHOT"
+	}
+}
+
+
+apply plugin: 'vetinari'
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.0-rc-2'
+}
