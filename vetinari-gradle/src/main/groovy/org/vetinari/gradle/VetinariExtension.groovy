@@ -46,11 +46,11 @@ class VetinariExtension
 	public Configuration toConfiguration()
 	{
 		Configuration conf = new Configuration()
-		conf.contentEncoding = contentEncoding
-		conf.contentRoot = project.file(contentRoot).toPath()
-		conf.templateRoot = project.file(templateRoot).toPath()
-		conf.outputRoot = project.file(outputRoot).toPath()
-		conf.siteConfig = project.file(siteConfig).toPath()
+		conf.contentEncoding = getContentEncoding()
+		conf.contentRoot = project.file(getContentRoot()).toPath()
+		conf.templateRoot = project.file(getTemplateRoot()).toPath()
+		conf.outputRoot = project.file(getOutputRoot()).toPath()
+		conf.siteConfig = project.file(getSiteConfig()).toPath()
 		return conf
 	}
 }
