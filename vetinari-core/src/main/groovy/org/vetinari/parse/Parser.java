@@ -60,7 +60,7 @@ public class Parser
 			String templateEngineName = metadata.hasPath(TEMPLATE_KEY) ? metadata.getString(TEMPLATE_KEY) : null;
 			TemplateEngine templateEngine = detect(source, templateEngineName, templateEngines, configuration.getDefaultTemplateEngine());
 
-			return new Page(metadata, relative, templateEngine, renderer);
+			return new Page(metadata, relative, templateEngine, renderer, content);
 		}
 	}
 

@@ -22,6 +22,7 @@ public class Configuration
 
 	private Path siteConfig;
 
+	//TODO: move these to Site
 	private Renderer defaultRenderer;
 	private TemplateEngine defaultTemplateEngine;
 

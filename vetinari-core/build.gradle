@@ -4,5 +4,5 @@ dependencies {
 
 	compile 'com.typesafe:config:1.2.1+'
 
-	compile gradleApi()
+	compile 'org.codehaus.groovy:groovy-all:2.3.+'
 }

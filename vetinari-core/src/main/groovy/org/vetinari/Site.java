@@ -74,4 +74,9 @@ public class Site
 	{
 		return siteConfig.hasPath("title") ? siteConfig.getString("title") : null;
 	}
+
+	public String getDefaultLayout()
+	{
+		return siteConfig.hasPath("layout") ? siteConfig.getString("layout") : null;
+	}
 }

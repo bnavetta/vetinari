@@ -30,13 +30,16 @@ public class Page
 	TemplateEngine templateEngine
 	Renderer renderer
 
-	/*
-	 * Some required properties are given as methods for easier Java access
-	 */
+	String content
 
 	public String getTitle()
 	{
 		return metadata.getString("title");
+	}
+
+	public String getLayout()
+	{
+		return metadata.hasPath("layout") ? metadata.getString("layout") : null;
 	}
 
 	/**

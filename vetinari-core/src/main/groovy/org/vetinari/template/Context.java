@@ -27,16 +27,17 @@ public class Context
 
 	private final Site site;
 
-	private Map<String, BiFunction<Object[], Context, String>> functions;
+	private final Map<String, BiFunction<Object[], Context, String>> functions;
 
 	private LoadingCache<String, Template> templateCache = CacheBuilder.newBuilder()
 			.build(new TemplateLoader());
 
-	public Context(Configuration configuration, Set<TemplateEngine> engines, Site site)
+	public Context(Configuration configuration, Set<TemplateEngine> engines, Site site, Map<String, BiFunction<Object[], Context, String>> functions)
 	{
 		this.configuration = configuration;
 		this.engines = engines;
 		this.site = site;
+		this.functions = functions;
 	}
 
 	public Site getSite()
@@ -74,12 +75,17 @@ public class Context
 			                         .orElseThrow(() -> new MissingTemplateException(configuration.getTemplateRoot(), templateName));
 
 			final String extension = com.google.common.io.Files.getFileExtension(templatePath.toString());
-			TemplateEngine engine = engines.stream().filter(e -> Iterables.contains(e.getFileExtensions(), extension)).findAny().get();
+			TemplateEngine engine = engineFor(extension);
 			try(Reader in = Files.newBufferedReader(templatePath))
 			{
 				String source = CharStreams.toString(in);
 				return engine.compile(source, Context.this);
 			}
 		}
+	}
+
+	public TemplateEngine engineFor(String extension)
+	{
+		return engines.stream().filter(e -> Iterables.contains(e.getFileExtensions(), extension)).findFirst().get();
 	}
 }
