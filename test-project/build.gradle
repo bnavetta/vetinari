@@ -13,5 +13,5 @@ buildscript {
 apply plugin: 'vetinari'
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.0-rc-2'
+	gradleVersion = '2.0'
 }
