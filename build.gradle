@@ -3,7 +3,7 @@ allprojects {
 	apply plugin: 'idea'
 
 	group = 'org.vetinari'
-	version = '0.0.1-SNAPSHOT'
+	version = '0.1-beta'
 }
 
 subprojects {
