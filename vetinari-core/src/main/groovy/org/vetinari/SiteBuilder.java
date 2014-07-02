@@ -20,15 +20,13 @@ public class SiteBuilder
 {
 	private final Configuration configuration;
 
-	private final SiteLoader siteLoader;
-
 	private Site site;
 
 	@Inject
-	public SiteBuilder(Configuration configuration, SiteLoader siteLoader)
+	public SiteBuilder(Site site, Configuration configuration)
 	{
+		this.site = site;
 		this.configuration = configuration;
-		this.siteLoader = siteLoader;
 	}
 
 	/*
@@ -62,16 +60,15 @@ public class SiteBuilder
 		return pages.map(bp -> {
 			Template layoutTemplate = site.getTemplate(Objects.firstNonNull(bp.page.getLayout(), site.getDefaultLayout()));
 			final ImmutableMap<String, Object> variables = ImmutableMap.of("site", site, "page", bp.page, "content", bp.currentContent);
+			System.out.println("Before layout: " + bp.currentContent);
 			bp.update(layoutTemplate.render(variables));
+			System.out.println("After layout: " + bp.currentContent);
 			return bp;
 		});
 	}
 
 	public void build() throws IOException
 	{
-		// Initialize parameters
-		site = siteLoader.load(configuration);
-
 		// Convert to page stream
 		// In theory, I can do parallel builds by using parallelStream() instead of stream()
 		Stream<BuildingPage> pages = site.getPages().stream().map(page -> new BuildingPage(page, page.getContent()));
@@ -94,6 +91,7 @@ public class SiteBuilder
 			//TODO: extension point for output paths (enable plugins for e.g. pretty urls)
 			Path outputPath = configuration.getOutputRoot().resolve(output.page.getIdentifier() + ".html");
 
+			System.out.println("Final content: " + output.currentContent);
 			Files.write(outputPath, output.currentContent.getBytes(configuration.getContentEncoding()));
 		}
 	}

@@ -1,5 +1,6 @@
 dependencies {
 	compile project(':vetinari-core')
+	compile project(':vetinari-integration')
 	compile 'com.google.guava:guava:17+'
 
 	compile gradleApi()

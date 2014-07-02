@@ -10,6 +10,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.vetinari.Configuration
+import org.vetinari.IntegrationModule
 import org.vetinari.SiteBuilder
 import org.vetinari.VetinariModule
 
@@ -58,6 +59,10 @@ class BuildTask extends DefaultTask
 		if(!realModules.any { m -> m instanceof VetinariModule })
 		{
 			realModules << new VetinariModule()
+		}
+		if(!realModules.any { m -> m instanceof IntegrationModule })
+		{
+			realModules << new IntegrationModule()
 		}
 
 		realModules << new ConfigModule(getConfiguration())

@@ -3,6 +3,7 @@ package org.vetinari;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.io.CharStreams;
@@ -15,6 +16,8 @@ import org.vetinari.render.Renderer;
 import org.vetinari.template.TemplateEngine;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,7 +30,7 @@ import java.util.function.BiFunction;
 /**
  * Loads a site and its content pages
  */
-public class SiteLoader
+public class SiteLoader implements Provider<Site>
 {
 	public static final String TEMPLATE_KEY = "template_engine";
 	public static final String RENDERER_KEY = "renderer";
@@ -37,21 +40,24 @@ public class SiteLoader
 	private final Set<ConfigParser> configParsers;
 	private final Map<String, BiFunction<Object[], Site, String>> functions;
 
+	private final Configuration configuration;
+	private final Config siteConfig;
+
 	@Inject
-	public SiteLoader(Set<TemplateEngine> templateEngines, Set<Renderer> renderers, Set<ConfigParser> configParsers, Map<String, BiFunction<Object[], Site, String>> functions)
+	public SiteLoader(Configuration configuration, @Named("siteConfig") Config siteConfig,
+	                  Set<TemplateEngine> templateEngines, Set<Renderer> renderers, Set<ConfigParser> configParsers, Map<String, BiFunction<Object[], Site, String>> functions)
 	{
 		this.templateEngines = templateEngines;
 		this.renderers = renderers;
 		this.configParsers = configParsers;
 		this.functions = functions;
+		this.configuration = configuration;
+		this.siteConfig = siteConfig;
 	}
 
-	public Site load(Configuration configuration) throws IOException
+	public Site load() throws IOException
 	{
 		Site.SiteBuilder siteBuilder = Site.builder();
-
-		// TODO: add ConfigParser.parseFile() and use that
-		Config siteConfig = ConfigFactory.parseFileAnySyntax(configuration.getSiteConfig().toFile());
 		siteBuilder.siteConfig(siteConfig);
 
 		Renderer defaultRenderer = Iterables.find(renderers, r -> r.getName().equals(siteConfig.getString("defaultRenderer")));
@@ -156,5 +162,18 @@ public class SiteLoader
 			parts = parts.subList(1, parts.size()); // splitToLists returns an immutable list
 		}
 		return parts;
+	}
+
+	@Override
+	public Site get()
+	{
+		try
+		{
+			return load();
+		}
+		catch(IOException e)
+		{
+			throw Throwables.propagate(e);
+		}
 	}
 }

@@ -1,1 +1,1 @@
-include 'vetinari-core', 'vetinari-gradle'
+include 'vetinari-core', 'vetinari-gradle', 'vetinari-integration'

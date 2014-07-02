@@ -14,6 +14,7 @@ public class NoOpTemplateEngine implements TemplateEngine
 	@Override
 	public Template compile(String source, Site site)
 	{
+		System.out.println("'Compiling' template: " + source);
 		return new NoOpTemplate(source);
 	}
 
