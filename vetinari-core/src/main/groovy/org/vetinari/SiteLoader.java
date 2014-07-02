@@ -10,7 +10,6 @@ import com.google.common.io.CharStreams;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import lombok.SneakyThrows;
-import org.vetinari.Site.*;
 import org.vetinari.config.ConfigParser;
 import org.vetinari.render.Renderer;
 import org.vetinari.template.TemplateEngine;
@@ -88,70 +87,73 @@ public class SiteLoader implements Provider<Site>
 
 		try(BufferedReader reader = Files.newBufferedReader(file))
 		{
-			Config metadata = extractMetadata(reader);
-			String content = CharStreams.toString(reader);
-
-			final Iterable<String> extensions = getExtensions(file.toString());
-
+			Config metadata = ConfigFactory.empty();
+			String content = "";
 			Renderer renderer = defaultRenderer;
-			if(metadata.hasPath("renderer"))
-			{
-				renderer = Iterables.find(renderers, r -> r.getName().equals(metadata.getString("renderer")));
-			}
-			else
-			{
-				Optional<Renderer> maybeRenderer = Iterables.tryFind(renderers, r -> Iterables.any(extensions, e -> Iterables.contains(r.getFileExtensions(), e)));
-				if(maybeRenderer.isPresent())
-				{
-					renderer = maybeRenderer.get();
-				}
-			}
-
 			TemplateEngine templateEngine = defaultTemplateEngine;
-			if(metadata.hasPath("templateEngine"))
+
+			String firstLine = reader.readLine();
+
+			if(!Strings.isNullOrEmpty(firstLine))
 			{
-				templateEngine = Iterables.find(templateEngines, e -> e.getName().equals(metadata.getString("templateEngine")));
-			}
-			else
-			{
-				Optional<TemplateEngine> maybeTemplateEngine = Iterables.tryFind(templateEngines, t -> Iterables.any(extensions, e -> Iterables.contains(t.getFileExtensions(), e)));
-				if(maybeTemplateEngine.isPresent())
+				boolean foundMetadata = false;
+				firstLine = firstLine.trim();
+				for(ConfigParser parser : configParsers)
 				{
-					templateEngine = maybeTemplateEngine.get();
+					if(parser.getStartDelimiter().equals(firstLine))
+					{
+						final StringBuilder frontMatter = new StringBuilder();
+						String line = reader.readLine();
+						while(line != null && !parser.getEndDelimiter().equals(line.trim()))
+						{
+							frontMatter.append(line).append('\n');
+							line = reader.readLine();
+						}
+						metadata = parser.parse(frontMatter.toString());
+						foundMetadata = true;
+						break;
+					}
+				}
+
+				content = CharStreams.toString(reader);
+				if(!foundMetadata)
+				{
+					content = firstLine + '\n' + content;
+				}
+
+				final Iterable<String> extensions = getExtensions(file.toString());
+
+				if(metadata.hasPath("renderer"))
+				{
+					final String rendererName = metadata.getString("renderer");
+					renderer = Iterables.find(renderers, r -> r.getName().equals(rendererName));
+				}
+				else
+				{
+					Optional<Renderer> maybeRenderer = Iterables.tryFind(renderers, r -> Iterables.any(extensions, e -> Iterables.contains(r.getFileExtensions(), e)));
+					if(maybeRenderer.isPresent())
+					{
+						renderer = maybeRenderer.get();
+					}
+				}
+
+				if(metadata.hasPath("templateEngine"))
+				{
+					final String templateEngineName = metadata.getString("templateEngine");
+					templateEngine = Iterables.find(templateEngines, e -> e.getName().equals(templateEngineName));
+				}
+				else
+				{
+					Optional<TemplateEngine> maybeTemplateEngine = Iterables.tryFind(templateEngines, t -> Iterables.any(extensions, e -> Iterables.contains(t.getFileExtensions(), e)));
+					if(maybeTemplateEngine.isPresent())
+					{
+						templateEngine = maybeTemplateEngine.get();
+					}
 				}
 			}
 
 			return new Page(metadata, relativePath, templateEngine, renderer, content);
 		}
-	}
-
-	private Config extractMetadata(BufferedReader reader) throws IOException
-	{
-		Config metadata = ConfigFactory.empty();
-
-		String firstLine = reader.readLine();
-
-		if(!Strings.isNullOrEmpty(firstLine))
-		{
-			firstLine = firstLine.trim();
-			for(ConfigParser parser : configParsers)
-			{
-				if(parser.getStartDelimiter().equals(firstLine))
-				{
-					final StringBuilder frontMatter = new StringBuilder();
-					String line = reader.readLine();
-					while(line != null && !parser.getEndDelimiter().equals(line.trim()))
-					{
-						frontMatter.append(line).append('\n');
-						line = reader.readLine();
-					}
-					metadata = parser.parse(frontMatter.toString());
-					break;
-				}
-			}
-		}
-
-		return metadata;
 	}
 
 	private Iterable<String> getExtensions(String name)

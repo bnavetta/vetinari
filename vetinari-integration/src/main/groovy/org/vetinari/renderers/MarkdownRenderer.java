@@ -54,7 +54,6 @@ public class MarkdownRenderer implements Renderer
 	@Override
 	public String render(String source)
 	{
-		System.out.println("Rendering markdown: " + source);
 		return pegdown.markdownToHtml(source);
 	}
 

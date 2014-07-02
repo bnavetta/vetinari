@@ -60,9 +60,7 @@ public class SiteBuilder
 		return pages.map(bp -> {
 			Template layoutTemplate = site.getTemplate(Objects.firstNonNull(bp.page.getLayout(), site.getDefaultLayout()));
 			final ImmutableMap<String, Object> variables = ImmutableMap.of("site", site, "page", bp.page, "content", bp.currentContent);
-			System.out.println("Before layout: " + bp.currentContent);
 			bp.update(layoutTemplate.render(variables));
-			System.out.println("After layout: " + bp.currentContent);
 			return bp;
 		});
 	}
@@ -91,7 +89,6 @@ public class SiteBuilder
 			//TODO: extension point for output paths (enable plugins for e.g. pretty urls)
 			Path outputPath = configuration.getOutputRoot().resolve(output.page.getIdentifier() + ".html");
 
-			System.out.println("Final content: " + output.currentContent);
 			Files.write(outputPath, output.currentContent.getBytes(configuration.getContentEncoding()));
 		}
 	}
