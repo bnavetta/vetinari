@@ -49,6 +49,10 @@ subprojects {
 		publications = ['mavenNebula']
 		publish = true
 
+		websiteUrl = 'https://github.com/roguePanda/vetinari'
+		issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
+		vcsUrl = 'https://github.com/roguePanda/vetinari.git'
+
 		pkg {
 			repo = 'vetinari'
 			name = project.name
