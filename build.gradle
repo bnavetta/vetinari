@@ -10,6 +10,7 @@ buildscript {
 		classpath 'com.netflix.nebula:nebula-plugin-plugin:latest.release'
 		classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:latest.release' // For snapshots
 		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:latest.release' // For releases
+		classpath 'com.github.townsfolk:gradle-release:latest.release'
 	}
 }
 
@@ -21,8 +22,6 @@ allprojects {
 	apply plugin: 'artifactory-publish'
 	apply plugin: 'com.jfrog.bintray'
 
-	group = 'com.bennavetta.vetinari'
-	version = '0.2-SNAPSHOT'
 	status = version.endsWith('-SNAPSHOT') ? 'integration' : 'release'
 
 	artifactory {
@@ -31,6 +30,22 @@ allprojects {
 }
 
 artifactoryPublish.skip = true
+
+// Release Plugin - Only apply to root project
+apply plugin: 'release'
+
+release {
+	failOnUnversionedFiles = false
+	failOnCommitNeeded = false
+}
+git.requireBranch = null
+git.pushToCurrentBranch = true
+
+task spawnUpload(type: GradleBuild, group: 'Release', description: 'Start a Gradle build running upload tasks with the new version') {
+	startParameter = gradle.startParameter.newInstance()
+	tasks = ['upload'] // Whenever releasing, this should delegate to bintrayUpload
+}
+createReleaseTag.dependsOn spawnUpload
 
 subprojects {
 	apply plugin: 'nebula-project'
