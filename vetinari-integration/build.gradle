@@ -1,3 +1,5 @@
+description 'Implement Vetinari extension points to work with other projects'
+
 configurations {
 	provided
 	compile.extendsFrom provided
@@ -6,8 +8,4 @@ configurations {
 dependencies {
 	compile project(':vetinari-core')
 	provided 'org.pegdown:pegdown:+'
-}
-
-bintray {
-	desc = 'Extension implementations for Vetinari'
 }

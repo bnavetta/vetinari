@@ -7,8 +7,9 @@ buildscript {
 	}
 	dependencies {
 		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:latest.release'
-		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:latest.release'
-		classpath 'com.netflix.nebula:nebula-project-plugin:latest.release'
+		classpath 'com.netflix.nebula:nebula-plugin-plugin:latest.release'
+		classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:latest.release' // For snapshots
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:latest.release' // For releases
 	}
 }
 
@@ -16,15 +17,25 @@ allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
 
+	apply plugin: 'maven-publish'
+	apply plugin: 'artifactory-publish'
+	apply plugin: 'com.jfrog.bintray'
+
 	group = 'com.bennavetta.vetinari'
-	version = '0.1-beta'
+	version = '0.2-SNAPSHOT'
+	status = version.endsWith('-SNAPSHOT') ? 'integration' : 'release'
+
+	artifactory {
+		contextUrl = 'https://oss.jfrog.org'
+	}
 }
+
+artifactoryPublish.skip = true
 
 subprojects {
 	apply plugin: 'nebula-project'
 	apply plugin: 'license'
 	apply plugin: 'groovy'
-	apply plugin: 'com.jfrog.bintray'
 
 	// It seems that adding signing.* properties enables signing, which causes an error since the both the main jar file and
 	// the signature (.asc) for the jar file have null classifiers, so the maven-publish plugin can't tell which is the main artifact
@@ -42,22 +53,42 @@ subprojects {
 		skipExistingHeaders true
 	}
 
+	artifactory {
+		contextUrl = 'https://oss.jfrog.org'
+		resolve {
+			repository {
+				repoKey = 'libs-release'
+			}
+		}
+		publish {
+			repository {
+				repoKey = 'oss-snapshot-local'
+				username = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+				password = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+			}
+			defaults {
+				publications 'mavenNebula'
+			}
+		}
+	}
+
 	bintray {
-		user = bintrayUser
-		key = bintrayKey
+		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+		key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
 
 		publications = ['mavenNebula']
 		publish = true
 
-		websiteUrl = 'https://github.com/roguePanda/vetinari'
-		issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
-		vcsUrl = 'https://github.com/roguePanda/vetinari.git'
-
+		// As far as I can tell, any one GitHub repository should have one Bintray package, so all Vetinari modules go in one package
 		pkg {
-			repo = 'vetinari'
-			name = project.name
+			repo = 'maven'
+			name = 'vetinari'
+			desc = 'Vetinari static site generator'
+			websiteUrl = 'https://github.com/roguePanda/vetinari'
+			issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
+			vcsUrl = 'https://github.com/roguePanda/vetinari.git'
 			licenses = ['Apache-2.0']
-			labels = ['static-site']
+			labels = ['gradle', 'static-site']
 			publicDownloadNumbers = true
 		}
 	}
@@ -68,6 +99,11 @@ subprojects {
 	repositories {
 		jcenter()
 		mavenCentral()
+	}
+
+	task upload(description: "Upload to Bintray for releases or OJO for snapshots", group: 'publishing') {
+		dependsOn publish
+		dependsOn status == 'release' ? bintrayUpload : artifactoryPublish
 	}
 }
 

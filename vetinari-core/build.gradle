@@ -3,6 +3,8 @@ configurations {
 	compile.extendsFrom provided
 }
 
+description 'Core implementation of Vetinari'
+
 dependencies {
 	compile 'com.google.inject:guice:4.0-beta4+'
 	compile 'com.google.inject.extensions:guice-multibindings:4.0-beta4+'
@@ -12,8 +14,4 @@ dependencies {
 	compile 'org.codehaus.groovy:groovy-all:2.3.+'
 
 	provided 'org.projectlombok:lombok:1.14.2'
-}
-
-bintray {
-	desc = 'Flexible static site generator in Java and Groovy'
 }

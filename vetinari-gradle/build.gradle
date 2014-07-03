@@ -1,14 +1,9 @@
+description 'Gradle plugin for Vetinari builds'
+
 dependencies {
 	compile project(':vetinari-core')
 	compile project(':vetinari-integration')
 	compile 'com.google.guava:guava:17+'
 
 	compile gradleApi()
-}
-
-bintray {
-	desc = 'Gradle plugin to build with Vetinari'
-	pkg {
-		labels += ['gradle']
-	}
 }
