@@ -5,3 +5,10 @@ dependencies {
 
 	compile gradleApi()
 }
+
+bintray {
+	desc = 'Gradle plugin to build with Vetinari'
+	pkg {
+		labels += ['gradle']
+	}
+}

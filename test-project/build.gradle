@@ -5,7 +5,7 @@ buildscript {
 	}	
 
 	dependencies {
-		classpath "org.vetinari:vetinari-gradle:0.0.1-SNAPSHOT"
+		classpath "com.bennavetta.vetinari:vetinari-gradle:0.0.1-SNAPSHOT"
 	}
 }
 

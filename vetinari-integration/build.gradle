@@ -2,9 +2,12 @@ configurations {
 	provided
 	compile.extendsFrom provided
 }
-//configurations.compile.extendsFrom provided
 
 dependencies {
 	compile project(':vetinari-core')
 	provided 'org.pegdown:pegdown:+'
+}
+
+bintray {
+	desc = 'Extension implementations for Vetinari'
 }

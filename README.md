@@ -16,11 +16,9 @@ In theory, Vetinari can be made to support any template system and any renderer.
 
 * `no-op` - Does nothing, so it should be used when the input is already HTML.
 * `markdown` - Render Markdown with the [Pegdown](https://github.com/sirthias/pegdown) parser. It recognizes the `.md` and `.markdown` file
-  extensions. `markdown.extensions` can be set to a list of Pegdown extension names (lowercased, with underscores replaced by dashes). 
+  extensions. `markdown.extensions` can be set to a list of Pegdown extension names (lowercased, with underscores replaced by dashes).
 
 ## Extending
 
 Currently, custom frontmatter parsers, template engines, renderers, and template functions can be added. More extension points
 are planned, including the ability to modify the site before it is built. Extensions are added via Guice multibindings and map bindings.
-
-[Design Overview](https://bensstuff.hackpad.com/Static-Site-Generator-Vetinari-tPVfvnFzj7e)

@@ -1,34 +1,62 @@
 import java.time.Year
 
+buildscript {
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:latest.release'
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:latest.release'
+		classpath 'com.netflix.nebula:nebula-project-plugin:latest.release'
+	}
+}
+
 allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
 
-	group = 'org.vetinari'
+	group = 'com.bennavetta.vetinari'
 	version = '0.1-beta'
 }
 
 subprojects {
+	apply plugin: 'nebula-project'
+	apply plugin: 'license'
 	apply plugin: 'groovy'
-	apply plugin: 'maven-publish'
-//	apply plugin: 'license'
+	apply plugin: 'com.jfrog.bintray'
 
-	buildscript {
-		repositories {
-			jcenter()
-			mavenCentral()
-		}
-		dependencies {
-//			classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.9.0'
+	// It seems that adding signing.* properties enables signing, which causes an error since the both the main jar file and
+	// the signature (.asc) for the jar file have null classifiers, so the maven-publish plugin can't tell which is the main artifact
+
+	contacts {
+		'ben.navetta@gmail.com' {
+			moniker 'Ben Navetta'
+			github 'roguePanda'
 		}
 	}
 
-// For some reason, Gradle can't find the license plugin...
-//	license {
-//		header rootProject.file('gradle/header.txt')
-//		ext.year = Year.now().value
-//		skipExistingHeaders true
-//	}
+	license {
+		header rootProject.file('gradle/header.txt')
+		ext.year = Year.now().value
+		skipExistingHeaders true
+	}
+
+	bintray {
+		user = bintrayUser
+		key = bintrayKey
+
+		publications = ['mavenNebula']
+		publish = true
+
+		pkg {
+			repo = 'vetinari'
+			name = project.name
+			licenses = ['Apache-2.0']
+			labels = ['static-site']
+			publicDownloadNumbers = true
+		}
+	}
 
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
@@ -36,19 +64,6 @@ subprojects {
 	repositories {
 		jcenter()
 		mavenCentral()
-	}
-
-	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				from components.java
-			}
-		}
-		repositories {
-			maven {
-				url "$rootProject.buildDir/repo"
-			}
-		}
 	}
 }
 
