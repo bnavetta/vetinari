@@ -10,6 +10,9 @@ allprojects {
 
 artifactoryPublish.skip = true
 
+// It seems that adding signing.* properties enables signing, which causes an error since the both the main jar file and
+// the signature (.asc) for the jar file have null classifiers, so the maven-publish plugin can't tell which is the main artifact
+
 subprojects {
 	bintray {
 		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')

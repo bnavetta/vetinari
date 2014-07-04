@@ -22,5 +22,10 @@ import com.bennavetta.vetinari.Engine;
  */
 public interface Renderer extends Engine
 {
+	/**
+	 * Process the given content source and generate the output content.
+	 * @param source the source, usually markup of some kind.
+	 * @return the rendered content, almost always HTML.
+	 */
 	public String render(String source);
 }

@@ -13,20 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bennavetta.vetinari.template;
-
-import java.util.Map;
-
 /**
- * Abstraction for a template class.
+ * This package defines the API for template processing.
  */
-public interface Template
-{
-	/**
-	 * Render this template in the given context. This usually involves things like variable interpolation,
-	 * conditionals, and loops.
-	 * @param variables the variables to make available to the template
-	 * @return the result of template rendering
-	 */
-	public String render(Map<String, Object> variables);
-}
+package com.bennavetta.vetinari.template;

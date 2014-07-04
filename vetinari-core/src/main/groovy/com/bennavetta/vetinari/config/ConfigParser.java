@@ -22,9 +22,20 @@ import com.typesafe.config.Config;
  */
 public interface ConfigParser
 {
+	/**
+	 * Parse frontmatter configuration.
+	 * @param source the configuration source
+	 * @return the parsed configuration object
+	 */
 	public Config parse(String source);
 
+	/**
+	 * Returns the string that indicates the beginning of frontmatter in the format this parses.
+	 */
 	public String getStartDelimiter();
 
+	/**
+	 * Returns the string indicating the end of frontmatter in the format this parses.
+	 */
 	public String getEndDelimiter();
 }

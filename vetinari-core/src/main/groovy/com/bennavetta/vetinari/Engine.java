@@ -21,7 +21,13 @@ package com.bennavetta.vetinari;
  */
 public interface Engine
 {
+	/**
+	 * Returns the unique, display-suitable name of this engine.
+	 */
 	public String getName();
 
+	/**
+	 * Returns file extensions associated with this engine, such as {@code md} for Markdown.
+	 */
 	public Iterable<String> getFileExtensions();
 }

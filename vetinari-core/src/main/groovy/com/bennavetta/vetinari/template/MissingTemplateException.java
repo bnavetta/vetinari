@@ -18,10 +18,15 @@ package com.bennavetta.vetinari.template;
 import java.nio.file.Path;
 
 /**
- * Indicates that a template could not be found
+ * Indicates that a template could not be found.
  */
 public class MissingTemplateException extends RuntimeException
 {
+	/**
+	 * Creates a new exception indicating that a template could not be found.
+	 * @param templateDir the directory containing template files
+	 * @param templatePath the name of the missing template
+	 */
 	public MissingTemplateException(Path templateDir, String templatePath)
 	{
 		super("Template " + templatePath + " not found in " + templateDir);

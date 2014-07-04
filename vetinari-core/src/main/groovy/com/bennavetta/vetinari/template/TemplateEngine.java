@@ -23,5 +23,11 @@ import com.bennavetta.vetinari.Site;
  */
 public interface TemplateEngine extends Engine
 {
+	/**
+	 * Compile the given template source so that it can later be rendered.
+	 * @param source the template source code
+	 * @param site a site object, which makes information such as template functions available
+	 * @return the compiled template
+	 */
 	public Template compile(String source, Site site);
 }

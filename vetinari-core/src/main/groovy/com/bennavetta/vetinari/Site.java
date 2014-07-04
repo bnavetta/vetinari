@@ -27,6 +27,7 @@ import com.typesafe.config.Config;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Builder;
+import lombok.experimental.Wither;
 import com.bennavetta.vetinari.render.Renderer;
 import com.bennavetta.vetinari.template.MissingTemplateException;
 import com.bennavetta.vetinari.template.Template;
@@ -45,6 +46,7 @@ import java.util.function.BiFunction;
  * Models all the content pages of a static site.
  */
 @Builder
+@Wither
 public class Site
 {
 	private ImmutableMap<String, Page> pages;

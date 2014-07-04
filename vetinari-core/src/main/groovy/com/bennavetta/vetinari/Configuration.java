@@ -36,26 +36,37 @@ public class Configuration
 
 	/**
 	 * Returns the path storing content files.
+	 * @see #setContentRoot(java.nio.file.Path)
 	 */
 	public Path getContentRoot()
 	{
 		return contentRoot;
 	}
 
+	/**
+	 * Sets the content root.
+	 * @param contentRoot the new content root
+	 * @see #getContentRoot()
+	 */
 	public void setContentRoot(Path contentRoot)
 	{
 		this.contentRoot = contentRoot;
 	}
 
 	/**
-	 * Returns the path storing templates. This includes both
-	 * layouts and partials.
+	 * Returns the path storing templates. This includes both layouts and partials.
+	 * @see #setTemplateRoot(java.nio.file.Path)
 	 */
 	public Path getTemplateRoot()
 	{
 		return templateRoot;
 	}
 
+	/**
+	 * Sets the template root.
+	 * @param layoutRoot the new template root
+	 * @see #getTemplateRoot()
+	 */
 	public void setTemplateRoot(Path layoutRoot)
 	{
 		this.templateRoot = layoutRoot;
@@ -63,12 +74,18 @@ public class Configuration
 
 	/**
 	 * Returns the path that generated files will be stored in.
+	 * @see #setOutputRoot(java.nio.file.Path)
 	 */
 	public Path getOutputRoot()
 	{
 		return outputRoot;
 	}
 
+	/**
+	 * Set the output root.
+	 * @param outputRoot the new output root
+	 * @see #getOutputRoot()
+	 */
 	public void setOutputRoot(Path outputRoot)
 	{
 		this.outputRoot = outputRoot;
@@ -76,12 +93,18 @@ public class Configuration
 
 	/**
 	 * Returns the character encoding used for all content files.
+	 * @see #setContentEncoding(java.nio.charset.Charset)
 	 */
 	public Charset getContentEncoding()
 	{
 		return contentEncoding;
 	}
 
+	/**
+	 * Set the content encoding.
+	 * @param contentEncoding the new content encoding
+	 * @see #getContentEncoding()
+	 */
 	public void setContentEncoding(Charset contentEncoding)
 	{
 		this.contentEncoding = contentEncoding;
@@ -89,12 +112,18 @@ public class Configuration
 
 	/**
 	 * Returns the path to the site configuration file.
+	 * @see #setSiteConfig(java.nio.file.Path)
 	 */
 	public Path getSiteConfig()
 	{
 		return siteConfig;
 	}
 
+	/**
+	 * Set the site configuration path.
+	 * @param siteConfig the path to the new site configuration file
+	 * @see #getSiteConfig()
+	 */
 	public void setSiteConfig(Path siteConfig)
 	{
 		this.siteConfig = siteConfig;

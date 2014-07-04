@@ -28,8 +28,11 @@ subprojects {
 	apply plugin: 'license'
 	apply plugin: 'groovy'
 
-	// It seems that adding signing.* properties enables signing, which causes an error since the both the main jar file and
-	// the signature (.asc) for the jar file have null classifiers, so the maven-publish plugin can't tell which is the main artifact
+	apply plugin: 'checkstyle'
+	checkstyle {
+		configFile = rootProject.file('config/checkstyle.xml')
+		ignoreFailures = true // Doesn't support Java 8 yet
+	}
 
 	contacts {
 		'ben.navetta@gmail.com' {
@@ -39,7 +42,7 @@ subprojects {
 	}
 
 	license {
-		header rootProject.file('gradle/header.txt')
+		header rootProject.file('config/HEADER')
 		ext.year = Year.now().value
 		skipExistingHeaders true
 	}
