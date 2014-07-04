@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/ben-navetta/maven/vetinari/images/download.png) ](https://bintray.com/ben-navetta/maven/vetinari/_latestVersion)
+
 # Vetinari
 
 Vetinari is yet another static site generator. Unlike (most) others, it is implemented in Java and Groovy.
