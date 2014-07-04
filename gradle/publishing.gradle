@@ -14,41 +14,61 @@ artifactoryPublish.skip = true
 // the signature (.asc) for the jar file have null classifiers, so the maven-publish plugin can't tell which is the main artifact
 
 subprojects {
-	bintray {
-		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
-		key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+//	bintray {
+//		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+//		key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+//
+//		publications = ['mavenNebula']
+//		publish = true
+//
+//		pkg {
+//			repo = 'vetinari'
+//			name = 'vetinari'
+//			desc = 'Vetinari static site generator'
+//			websiteUrl = 'https://github.com/roguePanda/vetinari'
+//			issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
+//			vcsUrl = 'https://github.com/roguePanda/vetinari.git'
+//			licenses = ['Apache-2.0']
+//			labels = ['gradle', 'static-site']
+//		}
+//	}
+}
 
-		publications = ['mavenNebula']
-		publish = true
+bintray {
+	user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+	key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
 
-		pkg {
-			repo = 'vetinari'
-			name = 'vetinari'
-			desc = 'Vetinari static site generator'
-			websiteUrl = 'https://github.com/roguePanda/vetinari'
-			issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
-			vcsUrl = 'https://github.com/roguePanda/vetinari.git'
-			licenses = ['Apache-2.0']
-			labels = ['gradle', 'static-site']
+	publications = ['mavenNebula']
+	publish = true
+
+	pkg {
+		repo = 'vetinari'
+		name = 'vetinari'
+		desc = 'Vetinari static site generator'
+		websiteUrl = 'https://github.com/roguePanda/vetinari'
+		issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
+		vcsUrl = 'https://github.com/roguePanda/vetinari.git'
+		licenses = ['Apache-2.0']
+		labels = ['gradle', 'static-site']
+	}
+}
+
+artifactory {
+	contextUrl = 'https://oss.jfrog.org'
+	resolve {
+		repository {
+			repoKey = 'libs-release'
 		}
 	}
-
-	artifactory {
-		contextUrl = 'https://oss.jfrog.org'
-		resolve {
-			repository {
-				repoKey = 'libs-release'
-			}
+	publish {
+		repository {
+			repoKey = 'oss-snapshot-local'
+			username = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+			password = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+			maven = true
 		}
-		publish {
-			repository {
-				repoKey = 'oss-snapshot-local'
-				username = bintray.user
-				password = bintray.key
-			}
-			defaults {
-				publications 'mavenNebula'
-			}
+		defaults {
+			publications 'mavenNebula'
 		}
 	}
 }
