@@ -15,8 +15,6 @@ buildscript {
 	}
 }
 
-buildscript.configurations.classpath.each { println it }
-
 allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
@@ -115,6 +113,13 @@ subprojects {
 	repositories {
 		jcenter()
 		mavenCentral()
+		maven {
+			url 'https://oss.sonatype.org/content/repositories/snapshots'
+		}
+	}
+
+	dependencies {
+		testCompile 'org.spockframework:spock-core:1.0-groovy-2.0-SNAPSHOT'
 	}
 
 	task upload(description: "Upload to Bintray for releases or OJO for snapshots", group: 'publishing') {
