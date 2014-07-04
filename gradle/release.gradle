@@ -1,0 +1,26 @@
+// Release Plugin - Only apply to root project
+apply plugin: 'release'
+
+release {
+	failOnUnversionedFiles = false
+	failOnCommitNeeded = false
+}
+git.requireBranch = null
+git.pushToCurrentBranch = true
+
+task spawnUpload(type: GradleBuild, group: 'Release', description: 'Start a Gradle build running upload tasks with the new version') {
+	startParameter = gradle.startParameter.newInstance()
+	tasks = ['upload'] // Whenever releasing, this should delegate to bintrayUpload
+}
+createReleaseTag.dependsOn spawnUpload
+
+allprojects {
+	status = version.endsWith('-SNAPSHOT') ? 'integration' : 'release'
+}
+
+subprojects {
+	task upload(description: "Upload to Bintray for releases or OJO for snapshots", group: 'publishing') {
+		dependsOn publish
+		dependsOn status == 'release' ? bintrayUpload : artifactoryPublish
+	}
+}

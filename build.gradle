@@ -18,35 +18,10 @@ buildscript {
 allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
-
-	apply plugin: 'maven-publish'
-	apply plugin: 'artifactory-publish'
-	apply plugin: 'com.jfrog.bintray'
-
-	status = version.endsWith('-SNAPSHOT') ? 'integration' : 'release'
-
-	artifactory {
-		contextUrl = 'https://oss.jfrog.org'
-	}
 }
 
-artifactoryPublish.skip = true
-
-// Release Plugin - Only apply to root project
-apply plugin: 'release'
-
-release {
-	failOnUnversionedFiles = false
-	failOnCommitNeeded = false
-}
-git.requireBranch = null
-git.pushToCurrentBranch = true
-
-task spawnUpload(type: GradleBuild, group: 'Release', description: 'Start a Gradle build running upload tasks with the new version') {
-	startParameter = gradle.startParameter.newInstance()
-	tasks = ['upload'] // Whenever releasing, this should delegate to bintrayUpload
-}
-createReleaseTag.dependsOn spawnUpload
+apply from: 'gradle/publishing.gradle'
+apply from: 'gradle/release.gradle'
 
 subprojects {
 	apply plugin: 'nebula-project'
@@ -69,64 +44,12 @@ subprojects {
 		skipExistingHeaders true
 	}
 
-	artifactory {
-		contextUrl = 'https://oss.jfrog.org'
-		resolve {
-			repository {
-				repoKey = 'libs-release'
-			}
-		}
-		publish {
-			repository {
-				repoKey = 'oss-snapshot-local'
-				username = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
-				password = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
-			}
-			defaults {
-				publications 'mavenNebula'
-			}
-		}
-	}
-
-	bintray {
-		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
-		key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
-
-		publications = ['mavenNebula']
-		publish = true
-
-		pkg {
-			repo = 'vetinari'
-			name = 'vetinari'
-			desc = 'Vetinari static site generator'
-			websiteUrl = 'https://github.com/roguePanda/vetinari'
-			issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
-			vcsUrl = 'https://github.com/roguePanda/vetinari.git'
-			licenses = ['Apache-2.0']
-			labels = ['gradle', 'static-site']
-		}
-	}
-
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
-
-	repositories {
-		jcenter()
-		mavenCentral()
-		maven {
-			url 'https://oss.sonatype.org/content/repositories/snapshots'
-		}
-	}
-
-	dependencies {
-		testCompile 'org.spockframework:spock-core:1.0-groovy-2.0-SNAPSHOT'
-	}
-
-	task upload(description: "Upload to Bintray for releases or OJO for snapshots", group: 'publishing') {
-		dependsOn publish
-		dependsOn status == 'release' ? bintrayUpload : artifactoryPublish
-	}
 }
+
+// Apply after the groovy plugin
+apply from: 'gradle/dependencies.gradle'
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.0'

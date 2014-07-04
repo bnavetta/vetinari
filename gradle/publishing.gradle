@@ -1,0 +1,51 @@
+allprojects {
+	apply plugin: 'artifactory-publish'
+	apply plugin: 'com.jfrog.bintray'
+	apply plugin: 'maven-publish'
+
+	artifactory {
+		contextUrl = 'https://oss.jfrog.org'
+	}
+}
+
+artifactoryPublish.skip = true
+
+subprojects {
+	bintray {
+		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+		key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+
+		publications = ['mavenNebula']
+		publish = true
+
+		pkg {
+			repo = 'vetinari'
+			name = 'vetinari'
+			desc = 'Vetinari static site generator'
+			websiteUrl = 'https://github.com/roguePanda/vetinari'
+			issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
+			vcsUrl = 'https://github.com/roguePanda/vetinari.git'
+			licenses = ['Apache-2.0']
+			labels = ['gradle', 'static-site']
+		}
+	}
+
+	artifactory {
+		contextUrl = 'https://oss.jfrog.org'
+		resolve {
+			repository {
+				repoKey = 'libs-release'
+			}
+		}
+		publish {
+			repository {
+				repoKey = 'oss-snapshot-local'
+				username = bintray.user
+				password = bintray.key
+			}
+			defaults {
+				publications 'mavenNebula'
+			}
+		}
+	}
+}

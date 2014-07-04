@@ -1,0 +1,13 @@
+subprojects {
+	repositories {
+		jcenter()
+		mavenCentral()
+		maven {
+			url 'https://oss.sonatype.org/content/repositories/snapshots'
+		}
+	}
+
+	dependencies {
+		testCompile 'org.spockframework:spock-core:1.0-groovy-2.0-SNAPSHOT'
+	}
+}
