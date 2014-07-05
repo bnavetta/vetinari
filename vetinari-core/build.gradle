@@ -11,7 +11,8 @@ dependencies {
 
 	compile 'com.typesafe:config:1.2.1+'
 
-	compile 'org.codehaus.groovy:groovy-all:2.3.+'
+	// Use the Groovy version built with, since that's what Gradle is using
+	compile "org.codehaus.groovy:groovy-all:${GroovySystem.version}"
 
 	provided 'org.projectlombok:lombok:1.14.2'
 }

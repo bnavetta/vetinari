@@ -2,10 +2,25 @@ allprojects {
 	apply plugin: 'artifactory-publish'
 	apply plugin: 'com.jfrog.bintray'
 	apply plugin: 'maven-publish'
+	apply plugin: 'nebula-publishing'
 
 	artifactory {
 		contextUrl = 'https://oss.jfrog.org'
 	}
+
+	// Multi-project equivalent of nebula-maven-distribute
+	publishing {
+		repositories {
+			maven {
+				name 'distMaven'
+				url rootProject.file('distMaven').toURI().toURL()
+			}
+		}
+	}
+	def distTask = tasks.findByName('distribute') ?: tasks.create(name: 'distribute')
+	distTask.dependsOn 'publishMavenNebulaPublicationToDistMavenRepository'
+	distTask.outputs.dir rootProject.file('distMaven')
+	tasks.matching({ it.name == 'clean' }).all { cleanTask -> cleanTask.dependsOn('cleanDistribute')}
 }
 
 artifactoryPublish.skip = true

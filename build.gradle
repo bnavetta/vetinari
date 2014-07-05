@@ -20,9 +20,6 @@ allprojects {
 	apply plugin: 'idea'
 }
 
-apply from: 'gradle/publishing.gradle'
-apply from: 'gradle/release.gradle'
-
 subprojects {
 	apply plugin: 'nebula-project'
 	apply plugin: 'license'
@@ -53,6 +50,10 @@ subprojects {
 
 // Apply after the groovy plugin
 apply from: 'gradle/dependencies.gradle'
+
+// Apply after nebula-project
+apply from: 'gradle/publishing.gradle'
+apply from: 'gradle/release.gradle'
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.0'

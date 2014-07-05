@@ -1,11 +1,19 @@
 buildscript {
 	repositories {
 		jcenter()
-		maven { url "../build/repo" } 
+		// TODO: the maven-publish plugin puts ALL dependencies in the POM as runtime dependencies, including the testCompile configuration
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+		maven { url file("../distMaven").toURI().toURL() } 
 	}	
 
+	Properties props = new Properties()
+	file('../gradle.properties').withReader('UTF-8') { r ->
+		props.load(r)
+	}
+	ext.vetinariVersion = props['version']
+
 	dependencies {
-		classpath "com.bennavetta.vetinari:vetinari-gradle:0.0.1-SNAPSHOT"
+		classpath "com.bennavetta.vetinari:vetinari-gradle:$vetinariVersion"
 	}
 }
 
