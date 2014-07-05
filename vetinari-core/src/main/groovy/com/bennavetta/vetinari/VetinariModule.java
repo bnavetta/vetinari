@@ -15,25 +15,15 @@
  */
 package com.bennavetta.vetinari;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
-import com.google.inject.multibindings.MapBinder;
-import com.google.inject.multibindings.Multibinder;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.bennavetta.vetinari.config.ConfigParser;
-import com.bennavetta.vetinari.config.GroovyConfigParser;
-import com.bennavetta.vetinari.config.HOCONParser;
-import com.bennavetta.vetinari.config.JSONParser;
+import com.bennavetta.vetinari.parse.PageParser;
+import com.bennavetta.vetinari.parse.SiteLoader;
 import com.bennavetta.vetinari.render.NoOpRenderer;
 import com.bennavetta.vetinari.render.Renderer;
 import com.bennavetta.vetinari.template.NoOpTemplateEngine;
 import com.bennavetta.vetinari.template.TemplateEngine;
 import com.bennavetta.vetinari.template.groovy.GroovyTemplateEngine;
-
-import javax.inject.Named;
-import java.util.function.BiFunction;
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
 
 /**
  * Guice module for core Vetinari objects.
@@ -43,7 +33,9 @@ public class VetinariModule extends AbstractModule
 	@Override
 	protected void configure()
 	{
-		bind(Site.class).toProvider(SiteLoader.class);
+		bind(PageParser.class);
+		bind(SiteLoader.class);
+
 		bind(SiteBuilder.class);
 
 		// Create bindings so they exist for Guice even if no implementations are added
@@ -55,23 +47,5 @@ public class VetinariModule extends AbstractModule
 				Multibinder.newSetBinder(binder(), TemplateEngine.class);
 		templateEngineBinder.addBinding().to(NoOpTemplateEngine.class);
 		templateEngineBinder.addBinding().to(GroovyTemplateEngine.class);
-
-		Multibinder<ConfigParser> configParserBinder = Multibinder.newSetBinder(binder(), ConfigParser.class);
-		configParserBinder.addBinding().to(GroovyConfigParser.class);
-		configParserBinder.addBinding().to(HOCONParser.class);
-		configParserBinder.addBinding().to(JSONParser.class);
-	}
-
-	/**
-	 * Load the site config file. This is done separately from loading the site itself, so the config can be used in
-	 * plugins without creating a circular dependency on the site.
-	 * @param configuration The build configuration
-	 */
-	@Provides
-	@Named("siteConfig")
-	Config siteConfig(Configuration configuration)
-	{
-		// TODO: add ConfigParser.parseFile() and use that
-		return ConfigFactory.parseFileAnySyntax(configuration.getSiteConfig().toFile());
 	}
 }
