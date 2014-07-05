@@ -24,10 +24,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.io.CharStreams;
 import com.typesafe.config.Config;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Builder;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 import com.bennavetta.vetinari.render.Renderer;
 import com.bennavetta.vetinari.template.MissingTemplateException;
@@ -48,36 +50,57 @@ import java.util.function.BiFunction;
  */
 @Builder
 @Wither
-@Value
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class Site
 {
 	private ImmutableMap<String, Page> pages;
 
+	/**
+	 * General site configuration.
+	 */
 	@Getter
 	private Config siteConfig;
 
 	private LoadingCache<String, Template> templateCache;
 
+	/**
+	 * Looks up a page at the given path. The path does not include file extensions.
+	 * @see Page#getIdentifier()
+	 */
 	public Page getPage(String path)
 	{
 		return pages.get(path);
 	}
 
+	/**
+	 * Returns all pages on the site.
+	 */
 	public ImmutableCollection<Page> getPages()
 	{
 		return pages.values();
 	}
 
+	/**
+	 * Returns the site title, as specified in the site configuration file under the {@code title} property.
+	 */
 	public String getTitle()
 	{
 		return siteConfig.hasPath("title") ? siteConfig.getString("title") : null;
 	}
 
+	/**
+	 * Returns the default page layout. This is set with the {@code defaultLayout} property in the site configuration
+	 * file.
+	 */
 	public String getDefaultLayout()
 	{
 		return siteConfig.getString("defaultLayout");
 	}
 
+	/**
+	 * Returns the base URL that the site will be served under. This is set with the {@code baseUrl} property in
+	 * the site configuration file.
+	 */
 	public URI getBaseUrl()
 	{
 		return URI.create(siteConfig.getString("baseUrl"));

@@ -17,11 +17,18 @@ import java.nio.file.Path;
 @Value
 public class Page
 {
+	/**
+	 * Returns the page title, which is given in the frontmatter under the {@code title} property.
+	 */
 	public String getTitle()
 	{
 		return metadata.getString("title");
 	}
 
+	/**
+	 * Returns the page layout to use, or {@code null} if none was specified. This is set in the
+	 * {@code layout} frontmatter property.
+	 */
 	public String getLayout()
 	{
 		return metadata.hasPath("layout") ? metadata.getString("layout") : null;
@@ -37,9 +44,7 @@ public class Page
 	}
 
 	/**
-	 * The information given at the top of the page. Note that the {@link com.typesafe.config.Config} object from the Typesafe Config library is used,
-	 * the data can come from other sources, such as YAML, and that the {@link com.typesafe.config.Config} interface was chosen because it has a
-	 * nice API.
+	 * The information given at the top of the page in the frontmatter section.
 	 */
 	private Config metadata;
 
@@ -48,7 +53,18 @@ public class Page
 	 */
 	private Path path;
 
+	/**
+	 * The template engine to run this page through.
+	 */
 	private TemplateEngine templateEngine;
+
+	/**
+	 * The renderer to render this page with.
+	 */
 	private Renderer renderer;
+
+	/**
+	 * The unprocessed content of this page, without frontmatter.
+	 */
 	private String content;
 }
