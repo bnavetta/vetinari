@@ -2,7 +2,6 @@ package com.bennavetta.vetinari.template;
 
 import com.bennavetta.vetinari.template.groovy.GroovyTemplateEngine;
 import com.google.inject.AbstractModule;
-import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
 
 /**
