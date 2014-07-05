@@ -40,18 +40,6 @@ import java.util.function.BiFunction;
  */
 public class VetinariModule extends AbstractModule
 {
-	/**
-	 * Type literal for template functions.
-	 */
-	public static final TypeLiteral<BiFunction<Object[], Site, String>> FUNCTION_TYPE =
-			new TypeLiteral<BiFunction<Object[], Site, String>>() { };
-
-	/**
-	 * Type literal for strings. This is needed along with {@link #FUNCTION_TYPE} to support
-	 * generic {@link MapBinder}s.
-	 */
-	public static final TypeLiteral<String> STRING_TYPE = new TypeLiteral<String>() { };
-
 	@Override
 	protected void configure()
 	{
@@ -67,9 +55,6 @@ public class VetinariModule extends AbstractModule
 				Multibinder.newSetBinder(binder(), TemplateEngine.class);
 		templateEngineBinder.addBinding().to(NoOpTemplateEngine.class);
 		templateEngineBinder.addBinding().to(GroovyTemplateEngine.class);
-
-		MapBinder<String, BiFunction<Object[], Site, String>> functionBinder =
-				MapBinder.newMapBinder(binder(), STRING_TYPE, FUNCTION_TYPE);
 
 		Multibinder<ConfigParser> configParserBinder = Multibinder.newSetBinder(binder(), ConfigParser.class);
 		configParserBinder.addBinding().to(GroovyConfigParser.class);

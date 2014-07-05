@@ -61,7 +61,7 @@ class GroovyTemplateEngine implements TemplateEngine
 		@Override
 		String render(Map<String, Object> variables)
 		{
-			return template.make(site.functions + variables)
+			return template.make(variables)
 		}
 	}
 }

@@ -85,7 +85,6 @@ public class SiteLoader implements Provider<Site>
 		siteBuilder.pages(pagesBuilder.build());
 
 		siteBuilder.configuration(configuration)
-				.functions(functions)
 				.renderers(renderers)
 				.templateEngines(templateEngines)
 				.defaultRenderer(defaultRenderer)

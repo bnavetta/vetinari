@@ -15,14 +15,10 @@
  */
 package com.bennavetta.vetinari;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.MapBinder;
-import com.google.inject.multibindings.Multibinder;
-import com.bennavetta.vetinari.config.ConfigParser;
 import com.bennavetta.vetinari.render.Renderer;
 import com.bennavetta.vetinari.template.TemplateEngine;
-
-import java.util.function.BiFunction;
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
 
 /**
  * Register integration classes if their dependencies are present.
@@ -36,10 +32,6 @@ public class IntegrationModule extends AbstractModule
 		tryBind(rendererBinder, "com.bennavetta.vetinari.renderers.MarkdownRenderer");
 
 		Multibinder<TemplateEngine> templateEngineBinder = Multibinder.newSetBinder(binder(), TemplateEngine.class);
-
-		MapBinder<String, BiFunction<Object[], Site, String>> functionBinder = MapBinder.newMapBinder(binder(), VetinariModule.STRING_TYPE, VetinariModule.FUNCTION_TYPE);
-
-		Multibinder<ConfigParser> configParserBinder = Multibinder.newSetBinder(binder(), ConfigParser.class);
 	}
 
 	private <T> void tryBind(Multibinder<T> multibinder, String className)

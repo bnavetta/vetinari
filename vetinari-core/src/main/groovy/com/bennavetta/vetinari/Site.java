@@ -58,9 +58,6 @@ public class Site
 	private Config siteConfig;
 
 	@Getter
-	private Map<String, BiFunction<Object[], Site, String>> functions;
-
-	@Getter
 	private Set<Renderer> renderers;
 
 	@Getter
