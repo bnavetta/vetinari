@@ -1,7 +1,7 @@
 package com.bennavetta.vetinari.parse;
 
-import com.bennavetta.vetinari.Configuration;
 import com.bennavetta.vetinari.Page;
+import com.bennavetta.vetinari.VetinariContext;
 import com.bennavetta.vetinari.render.Renderer;
 import com.bennavetta.vetinari.template.TemplateEngine;
 import com.google.common.base.Optional;
@@ -21,9 +21,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
-// Avoid conflict with java.nio.file.Files
 import static com.google.common.io.Files.getFileExtension;
 import static com.google.common.io.Files.getNameWithoutExtension;
+
+// Avoid conflict with java.nio.file.Files
 
 /**
  * Parse content pages.
@@ -43,11 +44,11 @@ public class PageParser
 		this.templateEngines = templateEngines;
 	}
 
-	public Page parsePage(Path file, Configuration configuration) throws PageParseException
+	public Page parsePage(Path file, VetinariContext context) throws PageParseException
 	{
-		Path relativePath = configuration.getContentRoot().relativize(file);
+		Path relativePath = context.getContentRoot().relativize(file);
 
-		try(BufferedReader reader = Files.newBufferedReader(file, configuration.getContentEncoding()))
+		try(BufferedReader reader = Files.newBufferedReader(file, context.getContentEncoding()))
 		{
 			Config metadata = ConfigFactory.empty();
 			StringBuilder contentBuilder = new StringBuilder();

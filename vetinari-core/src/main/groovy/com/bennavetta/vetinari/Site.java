@@ -26,6 +26,7 @@ import com.google.common.io.CharStreams;
 import com.typesafe.config.Config;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Value;
 import lombok.experimental.Builder;
 import lombok.experimental.Wither;
 import com.bennavetta.vetinari.render.Renderer;
@@ -47,27 +48,13 @@ import java.util.function.BiFunction;
  */
 @Builder
 @Wither
+@Value
 public class Site
 {
 	private ImmutableMap<String, Page> pages;
 
 	@Getter
-	private Configuration configuration;
-
-	@Getter
 	private Config siteConfig;
-
-	@Getter
-	private Set<Renderer> renderers;
-
-	@Getter
-	private Renderer defaultRenderer;
-
-	@Getter
-	private Set<TemplateEngine> templateEngines;
-
-	@Getter
-	private TemplateEngine defaultTemplateEngine;
 
 	private LoadingCache<String, Template> templateCache;
 
@@ -94,47 +81,5 @@ public class Site
 	public URI getBaseUrl()
 	{
 		return URI.create(siteConfig.getString("baseUrl"));
-	}
-
-	public Template getTemplate(String name) throws MissingTemplateException
-	{
-		// Seems to be some issue with Lombok's builder
-		if(templateCache == null)
-		{
-			templateCache = CacheBuilder.newBuilder().build(new TemplateLoader(this));
-		}
-
-		try
-		{
-			return templateCache.get(name);
-		}
-		catch (ExecutionException e)
-		{
-			Throwables.propagateIfInstanceOf(Throwables.getRootCause(e), MissingTemplateException.class);
-			throw Throwables.propagate(e);
-		}
-	}
-
-	@AllArgsConstructor
-	private static class TemplateLoader extends CacheLoader<String, Template>
-	{
-		private Site site;
-
-		@Override
-		public Template load(String templateName) throws Exception
-		{
-			final Path basePath = site.configuration.getTemplateRoot().resolve(templateName);
-			final Path templatePath = Files.list(basePath.getParent())
-			                               .filter(p -> com.google.common.io.Files.getNameWithoutExtension(p.toString()).equals(basePath.getFileName().toString()))
-			                               .findFirst()
-			                               .orElseThrow(() -> new MissingTemplateException(site.configuration.getTemplateRoot(), templateName));
-			final String fileExtension = com.google.common.io.Files.getFileExtension(templatePath.toString());
-			final TemplateEngine engine = Iterables.tryFind(site.templateEngines, t -> Iterables.contains(t.getFileExtensions(), fileExtension)).or(site.defaultTemplateEngine);
-			try(Reader in = Files.newBufferedReader(templatePath))
-			{
-				String source = CharStreams.toString(in);
-				return engine.compile(source, site);
-			}
-		}
 	}
 }

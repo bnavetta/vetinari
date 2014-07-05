@@ -15,13 +15,12 @@
  */
 package com.bennavetta.vetinari.template.groovy
 
-import com.google.common.collect.ImmutableList
-import groovy.text.SimpleTemplateEngine
-import groovy.text.TemplateEngine as GTemplateEngine
-import groovy.text.Template as GTemplate
-import com.bennavetta.vetinari.Site
 import com.bennavetta.vetinari.template.Template
 import com.bennavetta.vetinari.template.TemplateEngine
+import com.google.common.collect.ImmutableList
+import groovy.text.SimpleTemplateEngine
+import groovy.text.Template as GTemplate
+import groovy.text.TemplateEngine as GTemplateEngine
 
 /**
  * Render templates with Groovy's SimpleTemplateEngine
@@ -36,9 +35,9 @@ class GroovyTemplateEngine implements TemplateEngine
 	}
 
 	@Override
-	Template compile(String source, Site site)
+	Template compile(String source)
 	{
-		return new GroovyTemplate(site: site, template: templateEngine.createTemplate(source))
+		return new GroovyTemplate(template: templateEngine.createTemplate(source))
 	}
 
 	@Override
@@ -56,7 +55,6 @@ class GroovyTemplateEngine implements TemplateEngine
 	private static class GroovyTemplate implements Template
 	{
 		GTemplate template
-		Site site
 
 		@Override
 		String render(Map<String, Object> variables)

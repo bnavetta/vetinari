@@ -19,9 +19,6 @@ import com.bennavetta.vetinari.parse.PageParser;
 import com.bennavetta.vetinari.parse.SiteLoader;
 import com.bennavetta.vetinari.render.NoOpRenderer;
 import com.bennavetta.vetinari.render.Renderer;
-import com.bennavetta.vetinari.template.NoOpTemplateEngine;
-import com.bennavetta.vetinari.template.TemplateEngine;
-import com.bennavetta.vetinari.template.groovy.GroovyTemplateEngine;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 
@@ -42,10 +39,5 @@ public class VetinariModule extends AbstractModule
 
 		Multibinder<Renderer> rendererBinder = Multibinder.newSetBinder(binder(), Renderer.class);
 		rendererBinder.addBinding().to(NoOpRenderer.class);
-
-		Multibinder<TemplateEngine> templateEngineBinder =
-				Multibinder.newSetBinder(binder(), TemplateEngine.class);
-		templateEngineBinder.addBinding().to(NoOpTemplateEngine.class);
-		templateEngineBinder.addBinding().to(GroovyTemplateEngine.class);
 	}
 }
