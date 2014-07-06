@@ -1,0 +1,4 @@
+com.bennavetta.vetinari.build.BuildModule
+com.bennavetta.vetinari.parse.ParseModule
+com.bennavetta.vetinari.render.RenderModule
+com.bennavetta.vetinari.template.TemplateModule
