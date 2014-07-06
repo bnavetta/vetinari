@@ -26,6 +26,11 @@ repositories {
 	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
+dependencies {
+	// TODO: might want to add automatically
+	vetinari "com.bennavetta.vetinari:vetinari-integration:$vetinariVersion"
+}
+
 vetinari {
 	sites {
 		main
