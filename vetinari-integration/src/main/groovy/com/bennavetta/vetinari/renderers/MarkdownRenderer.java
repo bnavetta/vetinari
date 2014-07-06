@@ -15,6 +15,7 @@
  */
 package com.bennavetta.vetinari.renderers;
 
+import com.bennavetta.vetinari.VetinariContext;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.Config;
@@ -53,9 +54,9 @@ public class MarkdownRenderer implements Renderer
 	private PegDownProcessor pegdown;
 
 	@Inject
-	public MarkdownRenderer(@Named("siteConfig") Config siteConfig)
+	public MarkdownRenderer(VetinariContext context)
 	{
-
+		Config siteConfig = context.getSiteConfig();
 		int extensions = Extensions.NONE;
 		if(siteConfig.hasPath("markdown.extensions"))
 		{
