@@ -1,0 +1,1 @@
+com.bennavetta.vetinari.IntegrationModule
