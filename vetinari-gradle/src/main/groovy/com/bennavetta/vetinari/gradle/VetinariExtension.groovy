@@ -24,5 +24,5 @@ import java.nio.charset.Charset
  */
 class VetinariExtension
 {
-
+	String vetinariVersion = VetinariPlugin.getVersion()
 }

@@ -18,14 +18,43 @@ package com.bennavetta.vetinari.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+import java.util.jar.Manifest
+
 /**
  * Plugin for Vetinari builds from Gradle
  */
 class VetinariPlugin implements Plugin<Project>
 {
+	static final String CONFIGURATION_NAME = "vetinari"
+	static final String EXTENSION_NAME = "vetinari"
+
 	@Override
 	void apply(Project project)
 	{
-		VetinariExtension extension = project.extensions.create("vetinari", VetinariExtension, project)
+		VetinariExtension extension = project.extensions.create(EXTENSION_NAME, VetinariExtension, project)
+
+
+		project.afterEvaluate {
+			project.dependencies.add(CONFIGURATION_NAME, "com.bennavetta.vetinari:vetinari-cli:${extension.vetinariVersion}")
+		}
+	}
+
+	private void createVetinariConfiguration(Project project)
+	{
+		project.configurations.create(CONFIGURATION_NAME)
+	}
+
+	public static String getVersion()
+	{
+		InputStream manifestStream = null
+		try
+		{
+			manifestStream = VetinariPlugin.class.getResourceAsStream('/META-INF/MANIFEST.MF')
+			return new Manifest(manifestStream).getMainAttributes().get("Implementation-Version")
+		}
+		finally
+		{
+			manifestStream?.close()
+		}
 	}
 }
