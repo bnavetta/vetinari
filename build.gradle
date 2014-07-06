@@ -12,6 +12,7 @@ buildscript {
 		classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:latest.release' // For snapshots
 		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:latest.release' // For releases
 		classpath 'com.github.townsfolk:gradle-release:latest.release'
+		classpath 'com.github.jengelman.gradle.plugins:shadow:latest.release'
 	}
 }
 

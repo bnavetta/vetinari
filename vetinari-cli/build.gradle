@@ -1,0 +1,24 @@
+import nebula.plugin.publishing.component.CustomComponentPlugin
+
+description 'Command-line interface for Vetinari'
+
+dependencies {
+	compile project(':vetinari-core')
+	compile 'com.beust:jcommander:latest.integration' // Gradle 2.0 support in 1.0.2-SNAPSHOT
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'com.bennavetta.vetinari.cli.VetinariMain'
+	}
+}
+
+shadowJar {
+	mergeServiceFiles()
+	append('META-INF/vetinari-modules.txt')
+}
+
+// Hold off on shadow until it supports Gradle 2.0
+//CustomComponentPlugin.addArtifact(project, 'shadow', shadowJar, 'all')
