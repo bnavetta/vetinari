@@ -16,7 +16,6 @@
 package com.bennavetta.vetinari.gradle
 
 import org.gradle.api.Project
-import com.bennavetta.vetinari.Configuration
 
 import java.nio.charset.Charset
 
@@ -56,16 +55,5 @@ class VetinariExtension
 	public Charset getContentEncoding()
 	{
 		return contentEncoding
-	}
-
-	public Configuration toConfiguration()
-	{
-		Configuration conf = new Configuration()
-		conf.contentEncoding = getContentEncoding()
-		conf.contentRoot = project.file(getContentRoot()).toPath()
-		conf.templateRoot = project.file(getTemplateRoot()).toPath()
-		conf.outputRoot = project.file(getOutputRoot()).toPath()
-		conf.siteConfig = project.file(getSiteConfig()).toPath()
-		return conf
 	}
 }

@@ -55,6 +55,8 @@ apply from: 'gradle/dependencies.gradle'
 apply from: 'gradle/publishing.gradle'
 apply from: 'gradle/release.gradle'
 
+apply from: 'gradle/sonar.gradle'
+
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.0'
 }
