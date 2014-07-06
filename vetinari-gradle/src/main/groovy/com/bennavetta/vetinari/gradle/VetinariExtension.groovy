@@ -24,36 +24,5 @@ import java.nio.charset.Charset
  */
 class VetinariExtension
 {
-	private Charset contentEncoding
 
-	def contentRoot
-	def templateRoot
-	def outputRoot
-	def siteConfig
-
-	def modules
-
-	private Project project
-
-	public VetinariExtension(Project project)
-	{
-		this.project = project
-	}
-
-	public void setContentEncoding(def encoding)
-	{
-		if(encoding instanceof Charset)
-		{
-			contentEncoding = encoding
-		}
-		else
-		{
-			contentEncoding = Charset.forName(encoding.toString())
-		}
-	}
-
-	public Charset getContentEncoding()
-	{
-		return contentEncoding
-	}
 }
