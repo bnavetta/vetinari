@@ -15,8 +15,6 @@
  */
 package com.bennavetta.vetinari;
 
-import com.bennavetta.vetinari.template.Template;
-import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.Config;
@@ -44,8 +42,6 @@ public class Site
 	 */
 	@Getter
 	private Config siteConfig;
-
-	private LoadingCache<String, Template> templateCache;
 
 	/**
 	 * Looks up a page at the given path. The path does not include file extensions.

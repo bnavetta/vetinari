@@ -15,11 +15,7 @@
  */
 package com.bennavetta.vetinari;
 
-import com.bennavetta.vetinari.render.Renderer;
-import com.bennavetta.vetinari.template.TemplateEngine;
 import com.typesafe.config.Config;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.Wither;
 

@@ -16,7 +16,6 @@
 package com.bennavetta.vetinari.template;
 
 import com.bennavetta.vetinari.Engine;
-import com.bennavetta.vetinari.Site;
 
 /**
  * A {@code TemplateEngine} applies logic to page content.

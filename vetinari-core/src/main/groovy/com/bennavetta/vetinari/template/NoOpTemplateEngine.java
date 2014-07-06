@@ -17,7 +17,6 @@ package com.bennavetta.vetinari.template;
 
 import com.google.common.collect.ImmutableSet;
 import lombok.AllArgsConstructor;
-import com.bennavetta.vetinari.Site;
 
 import java.util.Map;
 

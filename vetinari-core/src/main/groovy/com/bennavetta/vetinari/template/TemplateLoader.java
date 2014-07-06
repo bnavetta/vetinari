@@ -16,7 +16,6 @@
 package com.bennavetta.vetinari.template;
 
 import com.bennavetta.vetinari.VetinariContext;
-import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -25,7 +24,6 @@ import com.google.common.collect.Iterables;
 import com.google.inject.Singleton;
 
 import javax.inject.Inject;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
