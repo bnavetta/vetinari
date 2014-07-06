@@ -1,3 +1,18 @@
+/**
+ * Copyright 2014 Ben Navetta
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.bennavetta.vetinari;
 
 import com.bennavetta.vetinari.render.Renderer;
@@ -26,15 +41,6 @@ public class Page
 	}
 
 	/**
-	 * Returns the page layout to use, or {@code null} if none was specified. This is set in the
-	 * {@code layout} frontmatter property.
-	 */
-	public String getLayout()
-	{
-		return metadata.hasPath("layout") ? metadata.getString("layout") : null;
-	}
-
-	/**
 	 * The identifier of a page is its path without any file extensions. For example, {@code <content root>/foo/bar.md.hb} would be {@code foo/bar}.
 	 */
 	public String getIdentifier()
@@ -52,16 +58,6 @@ public class Page
 	 * The path to this page, relative to the content root.
 	 */
 	private Path path;
-
-	/**
-	 * The template engine to run this page through.
-	 */
-	private TemplateEngine templateEngine;
-
-	/**
-	 * The renderer to render this page with.
-	 */
-	private Renderer renderer;
 
 	/**
 	 * The unprocessed content of this page, without frontmatter.

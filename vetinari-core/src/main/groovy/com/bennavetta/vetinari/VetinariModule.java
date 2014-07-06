@@ -33,8 +33,6 @@ public class VetinariModule extends AbstractModule
 		bind(PageParser.class);
 		bind(SiteLoader.class);
 
-		bind(SiteBuilder.class);
-
 		// Create bindings so they exist for Guice even if no implementations are added
 
 		Multibinder<Renderer> rendererBinder = Multibinder.newSetBinder(binder(), Renderer.class);

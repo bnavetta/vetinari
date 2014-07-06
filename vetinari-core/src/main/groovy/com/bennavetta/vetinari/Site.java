@@ -15,35 +15,19 @@
  */
 package com.bennavetta.vetinari;
 
-import com.google.common.base.Throwables;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
+import com.bennavetta.vetinari.template.Template;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-import com.google.common.io.CharStreams;
 import com.typesafe.config.Config;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Value;
 import lombok.experimental.Builder;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
-import com.bennavetta.vetinari.render.Renderer;
-import com.bennavetta.vetinari.template.MissingTemplateException;
-import com.bennavetta.vetinari.template.Template;
-import com.bennavetta.vetinari.template.TemplateEngine;
 
-import java.io.Reader;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.function.BiFunction;
+import java.util.function.UnaryOperator;
 
 /**
  * Models all the content pages of a static site.
@@ -98,11 +82,41 @@ public class Site
 	}
 
 	/**
+	 * Returns the name of the default renderer. This is set to a renderer name with the {@code defaultRenderer}
+	 * property in the site configuration file.
+	 */
+	public String getDefaultRenderer()
+	{
+		return siteConfig.getString("defaultRenderer");
+	}
+
+	/**
+	 * Returns the name of the default template engine. This is set with the {@code defaultTemplateEngine} property
+	 * in the site configuration file.
+	 */
+	public String getDefaultTemplateEngine()
+	{
+		return siteConfig.getString("defaultTemplateEngine");
+	}
+
+	/**
 	 * Returns the base URL that the site will be served under. This is set with the {@code baseUrl} property in
 	 * the site configuration file.
 	 */
 	public URI getBaseUrl()
 	{
 		return URI.create(siteConfig.getString("baseUrl"));
+	}
+
+	/**
+	 * Returns a new {@link Site} by applying the given transformation function to each page.
+	 * @param operator a function to apply to each page
+	 * @return a site with the updated pages
+	 */
+	public Site transformPages(UnaryOperator<Page> operator)
+	{
+		ImmutableMap.Builder<String, Page> newPagesBuilder = ImmutableMap.builder();
+		pages.forEach((path, page) -> newPagesBuilder.put(path, operator.apply(page)));
+		return withPages(newPagesBuilder.build());
 	}
 }

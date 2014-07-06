@@ -1,3 +1,4 @@
 distMaven/
 build/
+!vetinari-core/src/main/groovy/com/bennavetta/vetinari/build/
 .gradle/

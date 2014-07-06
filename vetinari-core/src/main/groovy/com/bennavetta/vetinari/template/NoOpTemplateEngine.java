@@ -27,7 +27,7 @@ import java.util.Map;
 public class NoOpTemplateEngine implements TemplateEngine
 {
 	@Override
-	public Template compile(String source, Site site)
+	public Template compile(String source)
 	{
 		return new NoOpTemplate(source);
 	}
@@ -35,7 +35,7 @@ public class NoOpTemplateEngine implements TemplateEngine
 	@Override
 	public String getName()
 	{
-		return "no-op";
+		return "noOp";
 	}
 
 	@Override

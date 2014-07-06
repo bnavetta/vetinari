@@ -31,7 +31,7 @@ public class NoOpRenderer implements Renderer
 	@Override
 	public String getName()
 	{
-		return "no-op";
+		return "noOp";
 	}
 
 	@Override

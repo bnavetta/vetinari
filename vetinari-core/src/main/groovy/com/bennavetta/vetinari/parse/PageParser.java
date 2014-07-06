@@ -1,13 +1,25 @@
+/**
+ * Copyright 2014 Ben Navetta
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.bennavetta.vetinari.parse;
 
 import com.bennavetta.vetinari.Page;
 import com.bennavetta.vetinari.VetinariContext;
 import com.bennavetta.vetinari.render.Renderer;
-import com.bennavetta.vetinari.template.TemplateEngine;
-import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.common.io.CharStreams;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -21,27 +33,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
-import static com.google.common.io.Files.getFileExtension;
-import static com.google.common.io.Files.getNameWithoutExtension;
-
-// Avoid conflict with java.nio.file.Files
-
 /**
  * Parse content pages.
  */
 public class PageParser
 {
 	private final Set<Renderer> renderers;
-	private final Set<TemplateEngine> templateEngines;
 
 	private static final ImmutableMap<String, ConfigSyntax> DELIMITERS =
 			ImmutableMap.of("+++", ConfigSyntax.CONF, "---", ConfigSyntax.PROPERTIES, "~~~", ConfigSyntax.JSON);
 
 	@Inject
-	public PageParser(Set<Renderer> renderers, Set<TemplateEngine> templateEngines)
+	public PageParser(Set<Renderer> renderers)
 	{
 		this.renderers = renderers;
-		this.templateEngines = templateEngines;
 	}
 
 	public Page parsePage(Path file, VetinariContext context) throws PageParseException
@@ -86,47 +91,7 @@ public class PageParser
 
 			contentBuilder.append(CharStreams.toString(reader));
 
-			/*
-			File extension rules:
-            - If there is only one file extension, it is the renderer
-            - If there are two file extensions, the first is the template engine and the second is the renderer
-			 */
-
-			Renderer renderer = null;
-			final String extension = getFileExtension(file.toString());
-			Optional<Renderer> rendererFromExtension = Iterables.tryFind(renderers, r -> Iterables.contains(r.getFileExtensions(), extension));
-			if(rendererFromExtension.isPresent())
-			{
-				renderer = rendererFromExtension.get();
-			}
-			else if(metadata.hasPath("renderer"))
-			{
-				final String rendererName = metadata.getString("renderer");
-				renderer = Iterables.find(renderers, r -> rendererName.equals(r.getName()));
-			}
-//			else
-//			{
-//				renderer = defaultRenderer;
-//			}
-
-			TemplateEngine templateEngine = null;
-			final String templateExtension = getFileExtension(getNameWithoutExtension(file.toString()));
-			Optional<TemplateEngine> templateEngineFromExtension = Iterables.tryFind(templateEngines, t -> Iterables.contains(t.getFileExtensions(), templateExtension));
-			if(templateEngineFromExtension.isPresent())
-			{
-				templateEngine = templateEngineFromExtension.get();
-			}
-			else if(metadata.hasPath("templateEngine"))
-			{
-				final String templateEngineName = metadata.getString("templateEngine");
-				templateEngine = Iterables.find(templateEngines, t -> templateEngineName.equals(t.getName()));
-			}
-//			else
-//			{
-//				templateEngine = defaultTemplateEngine;
-//			}
-
-			return new Page(metadata, relativePath, templateEngine, renderer, contentBuilder.toString());
+			return new Page(metadata, relativePath, contentBuilder.toString());
 		}
 		catch (IOException e)
 		{

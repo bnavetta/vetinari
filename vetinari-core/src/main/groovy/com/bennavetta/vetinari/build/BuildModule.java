@@ -13,25 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bennavetta.vetinari.template;
+package com.bennavetta.vetinari.build;
 
-import com.bennavetta.vetinari.template.groovy.GroovyTemplateEngine;
+import com.bennavetta.vetinari.build.phase.DefaultOutputPhase;
+import com.bennavetta.vetinari.build.phase.LayoutPhase;
+import com.bennavetta.vetinari.build.phase.RenderPhase;
+import com.bennavetta.vetinari.build.phase.TemplatePhase;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 
 /**
- * Module providing template functionality.
+ * Guice module for the build process.
  */
-public class TemplateModule extends AbstractModule
+public class BuildModule extends AbstractModule
 {
 	@Override
 	protected void configure()
 	{
-		Multibinder<TemplateEngine> templateEngineBinder =
-				Multibinder.newSetBinder(binder(), TemplateEngine.class);
-		templateEngineBinder.addBinding().to(NoOpTemplateEngine.class);
-		templateEngineBinder.addBinding().to(GroovyTemplateEngine.class);
+		bind(SiteBuilder.class);
 
-		bind(TemplateLoader.class);
+		Multibinder<BuildPhase> buildPhaseMultibinder = Multibinder.newSetBinder(binder(), BuildPhase.class);
+		buildPhaseMultibinder.addBinding().to(TemplatePhase.class);
+		buildPhaseMultibinder.addBinding().to(RenderPhase.class);
+		buildPhaseMultibinder.addBinding().to(LayoutPhase.class);
+		buildPhaseMultibinder.addBinding().to(DefaultOutputPhase.class);
 	}
 }
