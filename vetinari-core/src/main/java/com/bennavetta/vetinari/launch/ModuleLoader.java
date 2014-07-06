@@ -23,7 +23,7 @@ public class ModuleLoader
 {
 	private List<URL> findListingFiles(ClassLoader classLoader) throws IOException
 	{
-		Iterator<URL> iter = Iterators.forEnumeration(classLoader.getResources("/META-INF/vetinari-modules.txt"));
+		Iterator<URL> iter = Iterators.forEnumeration(classLoader.getResources("META-INF/vetinari-modules.txt"));
 		return Lists.newArrayList(iter);
 	}
 

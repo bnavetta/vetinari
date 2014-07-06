@@ -43,6 +43,7 @@ public class SiteLoader
 	public Site load(VetinariContext context) throws VetinariException
 	{
 		Site.SiteBuilder siteBuilder = Site.builder();
+		siteBuilder.siteConfig(context.getSiteConfig());
 
 		// The default template engine and renderer names should be in VetinariContext
 		// The actual objects can't be used because that could create a cycle between VetinariContext and the implementations
@@ -50,7 +51,7 @@ public class SiteLoader
 		ImmutableMap.Builder<String, Page> pageBuilder = ImmutableMap.builder();
 		try
 		{
-			for(Path file : Files.walk(context.getContentRoot()).collect(Collectors.toList()))
+			for(Path file : Files.walk(context.getContentRoot()).filter(Files::isRegularFile).collect(Collectors.toList()))
 			{
 				Page page = pageParser.parsePage(file, context);
 				pageBuilder.put(page.getIdentifier(), page);

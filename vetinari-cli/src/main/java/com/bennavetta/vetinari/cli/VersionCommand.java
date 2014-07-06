@@ -1,9 +1,13 @@
 package com.bennavetta.vetinari.cli;
 
 import com.beust.jcommander.Parameters;
+import com.beust.jcommander.internal.Lists;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Collections;
+import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
 
 /**
@@ -14,10 +18,18 @@ public class VersionCommand
 {
 	private Manifest readManifest() throws IOException
 	{
-		try(InputStream in = getClass().getResourceAsStream("/META-INF/MANIFEST.MF"))
+		for(URL manifestUrl : Collections.list(getClass().getClassLoader().getResources("META-INF/MANIFEST.MF")))
 		{
-			return new Manifest(in);
+			try(InputStream in = manifestUrl.openStream())
+			{
+				Manifest manifest = new Manifest(in);
+				if(manifest.getMainAttributes().getValue(Name.IMPLEMENTATION_TITLE).startsWith("com.bennavetta.vetinari"))
+				{
+					return manifest;
+				}
+			}
 		}
+		throw new IllegalStateException("Cannot find Vetinari MANIFEST.MF");
 	}
 
 	public void run()
