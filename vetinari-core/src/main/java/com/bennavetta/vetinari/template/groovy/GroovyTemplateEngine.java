@@ -4,6 +4,7 @@ import com.bennavetta.vetinari.template.Template;
 import com.bennavetta.vetinari.template.TemplateEngine;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import groovy.text.SimpleTemplateEngine;
 
 import java.io.IOException;
@@ -60,7 +61,8 @@ public class GroovyTemplateEngine implements TemplateEngine
 		@Override
 		public String render(Map<String, Object> variables)
 		{
-			return template.make(variables).toString();
+			// Make a copy since SimpleTemplateEngine's internals modify the binding, which can be an ImmutableMap
+			return template.make(Maps.newHashMap(variables)).toString();
 		}
 	}
 }
