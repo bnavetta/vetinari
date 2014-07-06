@@ -18,6 +18,7 @@ package com.bennavetta.vetinari.parse;
 import com.bennavetta.vetinari.Page;
 import com.bennavetta.vetinari.Site;
 import com.bennavetta.vetinari.VetinariContext;
+import com.bennavetta.vetinari.VetinariException;
 import com.google.common.collect.ImmutableMap;
 
 import javax.inject.Inject;
@@ -39,7 +40,7 @@ public class SiteLoader
 		this.pageParser = pageParser;
 	}
 
-	public Site load(VetinariContext context) throws IOException, PageParseException
+	public Site load(VetinariContext context) throws VetinariException
 	{
 		Site.SiteBuilder siteBuilder = Site.builder();
 
@@ -47,10 +48,17 @@ public class SiteLoader
 		// The actual objects can't be used because that could create a cycle between VetinariContext and the implementations
 
 		ImmutableMap.Builder<String, Page> pageBuilder = ImmutableMap.builder();
-		for(Path file : Files.walk(context.getContentRoot()).collect(Collectors.toList()))
+		try
 		{
-			Page page = pageParser.parsePage(file, context);
-			pageBuilder.put(page.getIdentifier(), page);
+			for(Path file : Files.walk(context.getContentRoot()).collect(Collectors.toList()))
+			{
+				Page page = pageParser.parsePage(file, context);
+				pageBuilder.put(page.getIdentifier(), page);
+			}
+		}
+		catch (IOException e)
+		{
+			throw new VetinariException("Unable to load content pages", e);
 		}
 		siteBuilder.pages(pageBuilder.build());
 

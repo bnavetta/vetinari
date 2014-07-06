@@ -15,10 +15,12 @@
  */
 package com.bennavetta.vetinari.parse;
 
+import com.bennavetta.vetinari.VetinariException;
+
 /**
  * A {@code PageParseException} is thrown when something goes wrong parsing a page.
  */
-public class PageParseException extends Exception
+public class PageParseException extends VetinariException
 {
 	public PageParseException(String message)
 	{
