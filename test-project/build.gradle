@@ -20,6 +20,18 @@ buildscript {
 
 apply plugin: 'vetinari'
 
+repositories {
+	jcenter()
+	maven { url file("../distMaven").toURI().toURL() }
+	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+vetinari {
+	sites {
+		main
+	}
+}
+
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.0'
 }

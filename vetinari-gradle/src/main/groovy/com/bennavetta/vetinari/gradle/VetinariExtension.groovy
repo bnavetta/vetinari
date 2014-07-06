@@ -15,9 +15,8 @@
  */
 package com.bennavetta.vetinari.gradle
 
-import org.gradle.api.Project
-
-import java.nio.charset.Charset
+import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectContainer
 
 /**
  * Extension for configuring Vetinari builds
@@ -25,4 +24,21 @@ import java.nio.charset.Charset
 class VetinariExtension
 {
 	String vetinariVersion = VetinariPlugin.getVersion()
+
+	final NamedDomainObjectContainer<VetinariSite> sites
+
+	VetinariExtension(NamedDomainObjectContainer<VetinariSite> sites)
+	{
+		this.sites = sites
+	}
+
+	public sites(Closure closure)
+	{
+		sites.configure(closure)
+	}
+
+	public sites(Action<? super NamedDomainObjectContainer<VetinariSite>> action)
+	{
+		action.execute(sites)
+	}
 }

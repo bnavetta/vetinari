@@ -18,6 +18,7 @@ package com.bennavetta.vetinari.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+import java.util.jar.Attributes
 import java.util.jar.Manifest
 
 /**
@@ -28,33 +29,60 @@ class VetinariPlugin implements Plugin<Project>
 	static final String CONFIGURATION_NAME = "vetinari"
 	static final String EXTENSION_NAME = "vetinari"
 
+	private VetinariExtension extension
+
 	@Override
 	void apply(Project project)
 	{
-		VetinariExtension extension = project.extensions.create(EXTENSION_NAME, VetinariExtension, project)
+		extension = createVetinariExtension(project)
+		createVetinariConfiguration(project)
 
-
-		project.afterEvaluate {
-			project.dependencies.add(CONFIGURATION_NAME, "com.bennavetta.vetinari:vetinari-cli:${extension.vetinariVersion}")
+		extension.sites.all { site ->
+			VetinariBuild task = project.tasks.create("build${site.name.capitalize()}Site", VetinariBuild)
+			task.site = site
 		}
 	}
 
 	private void createVetinariConfiguration(Project project)
 	{
 		project.configurations.create(CONFIGURATION_NAME)
+		project.afterEvaluate {
+			project.logger.debug("Using Vetinari version $extension.vetinariVersion")
+			project.dependencies.add(CONFIGURATION_NAME, "com.bennavetta.vetinari:vetinari-cli:${extension.vetinariVersion}")
+		}
+	}
+
+	private VetinariExtension createVetinariExtension(Project project)
+	{
+		return project.extensions.create(EXTENSION_NAME, VetinariExtension, project.container(VetinariSite))
 	}
 
 	public static String getVersion()
 	{
-		InputStream manifestStream = null
-		try
+		return readManifest().getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION)
+	}
+
+	private static Manifest readManifest() throws IOException
+	{
+		Manifest ourManifest = null
+		List<URL> manifests = Collections.list(VetinariPlugin.class.getClassLoader().getResources("META-INF/MANIFEST.MF"))
+		for(URL manifestUrl : manifests)
 		{
-			manifestStream = VetinariPlugin.class.getResourceAsStream('/META-INF/MANIFEST.MF')
-			return new Manifest(manifestStream).getMainAttributes().get("Implementation-Version")
+			manifestUrl.withInputStream { stream ->
+				Manifest manifest = new Manifest(stream)
+				if(manifest.getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_TITLE)?.startsWith("com.bennavetta.vetinari"))
+				{
+					ourManifest = manifest;
+				}
+			}
 		}
-		finally
+		if(ourManifest == null)
 		{
-			manifestStream?.close()
+			throw new IllegalStateException("Cannot find Vetinari MANIFEST.MF")
+		}
+		else
+		{
+			return ourManifest
 		}
 	}
 }
