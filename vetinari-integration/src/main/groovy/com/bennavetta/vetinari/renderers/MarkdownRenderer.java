@@ -16,15 +16,14 @@
 package com.bennavetta.vetinari.renderers;
 
 import com.bennavetta.vetinari.VetinariContext;
+import com.bennavetta.vetinari.render.Renderer;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.Config;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
-import com.bennavetta.vetinari.render.Renderer;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.Map;
 
 /**

@@ -1,7 +1,6 @@
 package com.bennavetta.vetinari.cli;
 
 import com.beust.jcommander.Parameters;
-import com.beust.jcommander.internal.Lists;
 
 import java.io.IOException;
 import java.io.InputStream;
