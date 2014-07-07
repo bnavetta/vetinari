@@ -27,5 +27,4 @@ shadowJar {
 	append('META-INF/vetinari-modules.txt')
 }
 
-// Hold off on shadow until it supports Gradle 2.0
-//CustomComponentPlugin.addArtifact(project, 'shadow', shadowJar, 'all')
+CustomComponentPlugin.addArtifact(project, 'shadow', shadowJar, 'all')
