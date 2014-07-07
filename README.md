@@ -2,28 +2,80 @@
 
 # Vetinari
 
-Vetinari is yet another static site generator. Unlike (most) others, it is implemented in Java and Groovy.
-Currently, Vetinari has to be run through [Gradle](http://www.gradle.org) 2.0, but the core implementation is
-isolated enough that it could be run through another build system or on its own.
-
-In theory, Vetinari can be made to support any template system and any renderer.
+Vetinari is yet another static site generator. It can be made to support any template system and any renderer.
 
 See [`test-project`](https://github.com/roguePanda/vetinari/tree/master/test-project) for a simple setup, and
 [`vetinari-integration`](https://github.com/roguePanda/vetinari/tree/master/test-project) for implementing renderers and template engines.
 
 ## Template Engines
 
-* `noOp` - Does absolutely nothing and just returns the template source. This is fine for content pages but isn't useful for layouts.
-* `groovyTemplate` - Uses Groovy's [SimpleTemplateEngine](http://beta.groovy-lang.org/docs/groovy-2.3.2/html/documentation/#_simpletemplateengine).
-  It recognizes the `.gtpl` file extension.
+### `noOp`
+
+This does absolutely nothing and just returns the template source. It can be used for content pages, but not layouts.
+
+### `groovyTemplate`
+
+This uses standard Groovy templating as defined by [SimpleTemplateEngine](http://beta.groovy-lang.org/docs/groovy-2.3.2/html/documentation/#_simpletemplateengine).
+It recognizes the `gtpl` file extension and is the default template engine.
 
 ## Renderers
 
-* `noOp` - Does nothing, so it should be used when the input is already HTML.
-* `markdown` - Render Markdown with the [Pegdown](https://github.com/sirthias/pegdown) parser. It recognizes the `.md` and `.markdown` file
-  extensions. `markdown.extensions` can be set to a list of Pegdown extension names (lowercased, with underscores replaced by dashes).
+### `noOp`
+
+This does no rendering, so it can be used when the input is already HTML.
+
+### `markdown`
+
+It renders Markdown using the [Pegdown](https://github.com/sirthias/pegdown) parser. It recognizes the `md` and `markdown` file extensions.
+The `markdown.extensions` site configuration property can be set to a list of Pegdown extensions. The extension names are lowercased
+and dashes are used instead of underscores.
 
 ## Extending
 
 Currently, custom template engines, renderers, and build phases can be added.
-Extensions are added via Guice multibindings and map bindings.
+Extensions are added via Guice multibindings.
+
+## Gradle
+
+The `vetinari-gradle` plugin integrates Vetinari with Gradle. It uses the command-line interface for classpath isolation.
+
+```groovy
+buildscript {
+	repositories {
+		jcenter()
+	}
+
+	dependencies {
+		classpath "com.bennavetta.vetinari:vetinari-gradle:<version>"
+	}
+}
+
+apply plugin: 'vetinari'
+
+repositories {
+	jcenter()
+}
+
+dependencies {
+	vetinari "com.bennavetta.vetinari:vetinari-integration:$vetinari.vetinariVersion"
+}
+
+vetinari {
+	sites {
+		main
+	}
+}
+```
+
+This will create a `vetinari` configuration to which extension dependencies can be added (the plugin only adds `vetinari-cli`). It also adds a `buildMainSite` task.
+The `vetinari` extension has a `vetinariVersion` property which defaults to the plugin version and can be used to download different `vetinari-cli` versions.
+Each site has the following properties:
+
+Property          | Default
+------------------|---------------------
+`contentEncoding` | UTF-8
+`contentRoot`     | src/$name/content
+`templateRoot`    | src/$name/templates
+`outputRoot`      | build/sites/$name
+`siteConfig`      | src/$name/site.conf
+
