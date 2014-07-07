@@ -79,3 +79,12 @@ Property          | Default
 `outputRoot`      | build/sites/$name
 `siteConfig`      | src/$name/site.conf
 
+## Command-Line
+
+The `vetinari-cli` command line can be used as follows:
+
+```shellsession
+vetinari build --content-encoding UTF-8 --content-root content --template-root templates --output-root dist --site-config mysite.conf
+```
+The `--verbose` and `--debug` flags can be used for more output.
+
