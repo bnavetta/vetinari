@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Load Vetinari and launch a build.
  */
+@Slf4j
 public class VetinariLauncher
 {
 	private VetinariContextModule contextModule = new VetinariContextModule();
@@ -55,12 +57,15 @@ public class VetinariLauncher
 		List<Module> allModules = Lists.newArrayList(classpathModules);
 		allModules.add(contextModule);
 
+		log.debug("Creating Guice injector with modules: {}", allModules);
+
 		return Guice.createInjector(allModules);
 	}
 
 	private void build(Injector injector) throws VetinariException
 	{
 		SiteBuilder builder = injector.getInstance(SiteBuilder.class);
+		log.debug("Building with {}", builder);
 		builder.build();
 	}
 

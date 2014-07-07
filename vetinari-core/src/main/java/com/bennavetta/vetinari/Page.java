@@ -59,4 +59,10 @@ public class Page
 	 * The unprocessed content of this page, without frontmatter.
 	 */
 	private String content;
+
+	@Override
+	public String toString()
+	{
+		return getIdentifier();
+	}
 }

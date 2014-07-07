@@ -3,6 +3,8 @@ package com.bennavetta.vetinari.cli;
 import com.bennavetta.vetinari.VetinariException;
 import com.bennavetta.vetinari.launch.VetinariLauncher;
 import com.beust.jcommander.Parameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
@@ -31,20 +33,29 @@ public class BuildCommand
 
 	public void run()
 	{
+		final Logger log = LoggerFactory.getLogger(BuildCommand.class);
+
 		launcher.withContentEncoding(Charset.forName(contentEncoding));
 		launcher.withContentRoot(Paths.get(contentRoot));
 		launcher.withTemplateRoot(Paths.get(templateRoot));
 		launcher.withOutputRoot(Paths.get(outputRoot));
 		launcher.withSiteConfig(Paths.get(siteConfig));
 
+		log.debug("Content encoding: {}", contentEncoding);
+		log.debug("Content root: {}", contentRoot);
+		log.debug("Template root: {}", templateRoot);
+		log.debug("Output root: {}", outputRoot);
+		log.debug("Site config: {}", siteConfig);
+
 		try
 		{
+			log.info("Starting build");
 			launcher.run();
+			log.info("Build complete");
 		}
 		catch (VetinariException e)
 		{
-			// TODO: logging (here and elsewhere)
-			e.printStackTrace();
+			log.error("Error building site", e);
 		}
 	}
 }

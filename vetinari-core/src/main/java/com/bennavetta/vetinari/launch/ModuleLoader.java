@@ -7,6 +7,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.inject.Module;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  * is UTF-8 encoded and contains a list of module class names, one on each line. Empty lines and lines starting
  * with {@code #} are ignored. Module classes must have no-argument constructors.
  */
+@Slf4j
 public class ModuleLoader
 {
 	private List<URL> findListingFiles(ClassLoader classLoader) throws IOException
@@ -42,6 +44,7 @@ public class ModuleLoader
 		List<String> classNames = Lists.newArrayList();
 		for(URL listing : findListingFiles(getClass().getClassLoader()))
 		{
+			log.debug("Reading module list from {}", listing);
 			classNames.addAll(parseListing(listing));
 		}
 
@@ -50,6 +53,7 @@ public class ModuleLoader
 		{
 			for(String className : classNames)
 			{
+				log.debug("Instantiating module class {}", className);
 				modulesBuilder.add((Module) Class.forName(className).newInstance());
 			}
 		}

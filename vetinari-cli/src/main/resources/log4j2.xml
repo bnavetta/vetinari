@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="Vetinari">
+
+    <Appenders>
+        <Routing name="dispatch">
+
+            <Routes pattern="$${sys:vetinari.verbosity}">
+
+                <!-- Standard verbosity -->
+                <Route key="normal">
+
+                    <Console name="console-normal" target="SYSTEM_OUT">
+
+                        <PatternLayout pattern="%highlight{%level %msg%n}"/>
+
+                        <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+
+                    </Console>
+
+                </Route>
+
+                <!-- Debug level -->
+                <Route key="debug">
+
+                    <Console name="console-debug" target="SYSTEM_OUT">
+
+                        <PatternLayout pattern="%date{hh:mm:ss.SSS a} [%-5level] %c{1.} %msg%n"/>
+
+                        <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+
+                    </Console>
+
+                </Route>
+
+                <!-- Everything -->
+                <Route key="verbose">
+
+                    <Console name="console-verbose" target="SYSTEM_OUT">
+
+                        <PatternLayout pattern="%date{hh:mm:ss.SSS a} [%-5level] %c{1.} %msg%n"/>
+
+                    </Console>
+
+                </Route>
+
+            </Routes>
+
+        </Routing>
+    </Appenders>
+
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="dispatch"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

@@ -22,6 +22,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
 import com.google.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.nio.file.Files;
@@ -35,6 +36,7 @@ import static com.google.common.io.Files.getFileExtension;
  * Loads various kinds of templates.
  */
 @Singleton
+@Slf4j
 public class TemplateLoader
 {
 	private final VetinariContext context;
@@ -58,7 +60,9 @@ public class TemplateLoader
 				final Path templatePath = context.getTemplateRoot().resolve(templateName);
 				final String extension = getFileExtension(templateName);
 				final TemplateEngine engine = Iterables.tryFind(templateEngines, t -> Iterables.contains(t.getFileExtensions(), extension)).or(defaultTemplateEngine);
+				log.debug("Compiling template from {} with {}", templatePath, engine);
 				String source = new String(Files.readAllBytes(templatePath), context.getContentEncoding());
+				log.trace("Read template source \"{}\"", source);
 				return engine.compile(source);
 			}
 		});
@@ -68,6 +72,7 @@ public class TemplateLoader
 	{
 		try
 		{
+			log.debug("Retrieving template {}", path);
 			return templateCache.get(path);
 		}
 		catch (ExecutionException e)

@@ -4,14 +4,21 @@ description 'Command-line interface for Vetinari'
 
 dependencies {
 	compile project(':vetinari-core')
-	compile 'com.beust:jcommander:latest.integration' // Gradle 2.0 support in 1.0.2-SNAPSHOT
+	compile 'com.beust:jcommander:latest.integration'
+
+	compile 'org.apache.logging.log4j:log4j-core:latest.integration'
+	compile 'org.apache.logging.log4j:log4j-api:latest.integration'
+	compile 'org.apache.logging.log4j:log4j-slf4j-impl:latest.integration'
 }
+
+apply plugin: 'application'
+mainClassName = 'com.bennavetta.vetinari.cli.VetinariMain'
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
 jar {
 	manifest {
-		attributes 'Main-Class': 'com.bennavetta.vetinari.cli.VetinariMain'
+		attributes 'Main-Class': mainClassName
 	}
 }
 

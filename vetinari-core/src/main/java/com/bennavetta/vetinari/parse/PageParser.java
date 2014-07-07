@@ -25,6 +25,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigParseOptions;
 import com.typesafe.config.ConfigSyntax;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.BufferedReader;
@@ -36,6 +37,7 @@ import java.util.Set;
 /**
  * Parse content pages.
  */
+@Slf4j
 public class PageParser
 {
 	private final Set<Renderer> renderers;
@@ -51,6 +53,7 @@ public class PageParser
 
 	public Page parsePage(Path file, VetinariContext context) throws PageParseException
 	{
+		log.info("Parsing content file {}", file);
 		Path relativePath = context.getContentRoot().relativize(file);
 
 		try(BufferedReader reader = Files.newBufferedReader(file, context.getContentEncoding()))
@@ -64,6 +67,8 @@ public class PageParser
 				ConfigSyntax syntax = DELIMITERS.get(firstLine.trim());
 				if(syntax != null) // frontmatter present
 				{
+					log.debug("Detected frontmatter syntax: {}", syntax);
+
 					final String delimiter = firstLine.trim();
 					final StringBuilder frontmatterBuilder = new StringBuilder();
 					String line = null;
@@ -82,6 +87,7 @@ public class PageParser
 					metadata = ConfigFactory.parseString(frontmatterBuilder.toString(), ConfigParseOptions.defaults()
 					                                                                                      .setOriginDescription(file.toString())
 					                                                                                      .setSyntax(syntax));
+					log.trace("Read frontmatter {}", metadata);
 				}
 				else
 				{
@@ -90,6 +96,7 @@ public class PageParser
 			}
 
 			contentBuilder.append(CharStreams.toString(reader));
+			log.trace("Read page content: \"{}\"", contentBuilder);
 
 			return new Page(metadata, relativePath, contentBuilder.toString());
 		}

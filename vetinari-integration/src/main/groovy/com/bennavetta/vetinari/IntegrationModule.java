@@ -19,12 +19,16 @@ import com.bennavetta.vetinari.render.Renderer;
 import com.bennavetta.vetinari.template.TemplateEngine;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Register integration classes if their dependencies are present.
  */
 public class IntegrationModule extends AbstractModule
 {
+	private final Logger log = LoggerFactory.getLogger(IntegrationModule.class);
+
 	@Override
 	protected void configure()
 	{
@@ -36,13 +40,15 @@ public class IntegrationModule extends AbstractModule
 
 	private <T> void tryBind(Multibinder<T> multibinder, String className)
 	{
+		log.debug("Trying to load {}", className);
 		try
 		{
 			multibinder.addBinding().to((Class<? extends T>) Class.forName(className));
+			log.debug("Successfully loaded {}", className);
 		}
 		catch (ClassNotFoundException e)
 		{
-			// Assume this means some required class was missing
+			log.debug("Failed to load class", e);
 		}
 	}
 }

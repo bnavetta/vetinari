@@ -1,6 +1,8 @@
 package com.bennavetta.vetinari.cli;
 
 import com.beust.jcommander.Parameters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,15 +17,19 @@ import java.util.jar.Manifest;
 @Parameters(commandDescription = "Display version information")
 public class VersionCommand
 {
+	private Logger log;
+
 	private Manifest readManifest() throws IOException
 	{
 		for(URL manifestUrl : Collections.list(getClass().getClassLoader().getResources("META-INF/MANIFEST.MF")))
 		{
+			log.debug("Investigating manifest {}", manifestUrl);
 			try(InputStream in = manifestUrl.openStream())
 			{
 				Manifest manifest = new Manifest(in);
 				if(manifest.getMainAttributes().getValue(Name.IMPLEMENTATION_TITLE).startsWith("com.bennavetta.vetinari"))
 				{
+					log.debug("Found Vetinari manifest: {}", manifestUrl);
 					return manifest;
 				}
 			}
@@ -33,9 +39,11 @@ public class VersionCommand
 
 	public void run()
 	{
+		log = LoggerFactory.getLogger(VersionCommand.class);
 		try
 		{
 			Manifest manifest = readManifest();
+			log.debug("Found Vetinari manifest {}", manifest.getMainAttributes());
 
 			String version = manifest.getMainAttributes().getValue("Implementation-Version");
 			String buildDate = manifest.getMainAttributes().getValue("Build-Date");
@@ -52,12 +60,11 @@ public class VersionCommand
 				.append(String.format("    Commit %s\n", commit))
 				.append(String.format("    Running Java %s\n", javaVersion));
 
-			System.out.print(result.toString());
+			log.info(result.toString());
 		}
 		catch (IOException e)
 		{
-			System.err.println("Unable to load version information: " + e.getLocalizedMessage());
-			e.printStackTrace();
+			log.error("Unable to load version information", e);
 		}
 	}
 }

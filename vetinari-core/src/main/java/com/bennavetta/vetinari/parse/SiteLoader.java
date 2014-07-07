@@ -20,6 +20,7 @@ import com.bennavetta.vetinari.Site;
 import com.bennavetta.vetinari.VetinariContext;
 import com.bennavetta.vetinari.VetinariException;
 import com.google.common.collect.ImmutableMap;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Parse a {@link Site} and its content pages.
  */
+@Slf4j
 public class SiteLoader
 {
 	private final PageParser pageParser;
@@ -45,12 +47,10 @@ public class SiteLoader
 		Site.SiteBuilder siteBuilder = Site.builder();
 		siteBuilder.siteConfig(context.getSiteConfig());
 
-		// The default template engine and renderer names should be in VetinariContext
-		// The actual objects can't be used because that could create a cycle between VetinariContext and the implementations
-
 		ImmutableMap.Builder<String, Page> pageBuilder = ImmutableMap.builder();
 		try
 		{
+			log.info("Loading content pages from {}", context.getContentRoot());
 			for(Path file : Files.walk(context.getContentRoot()).filter(Files::isRegularFile).collect(Collectors.toList()))
 			{
 				Page page = pageParser.parsePage(file, context);
