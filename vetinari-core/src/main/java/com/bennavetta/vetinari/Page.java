@@ -42,7 +42,8 @@ public class Page
 	public String getIdentifier()
 	{
 		String pathString = path.toString();
-		return pathString.substring(0, pathString.indexOf("."));
+		int lastDot = pathString.indexOf('.');
+		return lastDot == -1 ? pathString : pathString.substring(0, pathString.indexOf("."));
 	}
 
 	/**
