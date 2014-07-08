@@ -17,6 +17,7 @@ package com.bennavetta.vetinari.cli;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import com.google.common.base.Strings;
 
 /**
@@ -54,7 +55,16 @@ public class VetinariMain
 		jc.addCommand("version", versionCommand);
 		jc.addCommand("build", buildCommand);
 
-		jc.parse(args);
+		try
+		{
+			jc.parse(args);
+		}
+		catch(ParameterException e)
+		{
+			System.err.println(e.getMessage());
+			jc.usage();
+			System.exit(1);
+		}
 
 		if(verbose)
 		{
