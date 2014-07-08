@@ -9,6 +9,7 @@ dependencies {
 	compile 'com.google.inject:guice:4.0-beta4+'
 	compile 'com.google.inject.extensions:guice-multibindings:4.0-beta4+'
 
+	compile 'com.google.guava:guava:17+'
 	compile 'com.typesafe:config:1.2.1+'
 	compile 'org.slf4j:slf4j-api:1.7+'
 
