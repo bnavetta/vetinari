@@ -58,14 +58,16 @@ public class VetinariMain
 		{
 			jc.usage();
 		}
-
-		if("version".equals(jc.getParsedCommand()) || displayVersion)
+		else
 		{
-			versionCommand.run();
-		}
-		else if(Strings.isNullOrEmpty(jc.getParsedCommand()) || "build".equals(jc.getParsedCommand()))
-		{
-			buildCommand.run();
+			if("version".equals(jc.getParsedCommand()) || displayVersion)
+			{
+				versionCommand.run();
+			}
+			else if(Strings.isNullOrEmpty(jc.getParsedCommand()) || "build".equals(jc.getParsedCommand()))
+			{
+				buildCommand.run();
+			}
 		}
 	}
 
