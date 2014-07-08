@@ -1,0 +1,15 @@
+build
+vetinari-core/build
+vetinari-cli/build
+vetinari-gradle/build
+vetinari-integration/build
+distMaven
+.gradle
+.idea
+gradlew
+gradlew.bat
+
+test-project/gradlew
+test-project/gradlew.bat
+test-project/.gradle
+test-project/build
