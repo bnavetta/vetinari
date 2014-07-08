@@ -27,7 +27,8 @@ public class VersionCommand
 			try(InputStream in = manifestUrl.openStream())
 			{
 				Manifest manifest = new Manifest(in);
-				if(manifest.getMainAttributes().getValue(Name.IMPLEMENTATION_TITLE).startsWith("com.bennavetta.vetinari"))
+				String implementationTitle = manifest.getMainAttributes().getValue(Name.IMPLEMENTATION_TITLE);
+				if(implementationTitle != null && implementationTitle.startsWith("com.bennavetta.vetinari"))
 				{
 					log.debug("Found Vetinari manifest: {}", manifestUrl);
 					return manifest;
