@@ -25,6 +25,8 @@ import com.google.common.base.Strings;
  */
 public class VetinariMain
 {
+	private static final String VERBOSITY_PROP = "vetinari.verbosity";
+
 	/*
 	Parameters
 	 */
@@ -59,24 +61,24 @@ public class VetinariMain
 		{
 			jc.parse(args);
 		}
-		catch(ParameterException e)
+		catch(ParameterException e) //NOSONAR
 		{
-			System.err.println(e.getMessage());
+			System.err.println(e.getMessage()); //NOSONAR
 			jc.usage();
-			System.exit(1);
+			System.exit(1); //NOSONAR
 		}
 
 		if(verbose)
 		{
-			System.setProperty("vetinari.verbosity", "verbose");
+			System.setProperty(VERBOSITY_PROP, "verbose");
 		}
 		else if(debug)
 		{
-			System.setProperty("vetinari.verbosity", "debug");
+			System.setProperty(VERBOSITY_PROP, "debug");
 		}
 		else
 		{
-			System.setProperty("vetinari.verbosity", "normal");
+			System.setProperty(VERBOSITY_PROP, "normal");
 		}
 
 		if(help)

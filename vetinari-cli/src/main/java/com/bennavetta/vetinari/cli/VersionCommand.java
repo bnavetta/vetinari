@@ -32,7 +32,7 @@ import java.util.jar.Manifest;
 @Parameters(commandDescription = "Display version information")
 public class VersionCommand
 {
-	private Logger log;
+	private Logger log; //NOSONAR
 
 	private Manifest readManifest() throws IOException
 	{

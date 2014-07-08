@@ -48,7 +48,7 @@ public class BuildCommand
 
 	public void run()
 	{
-		final Logger log = LoggerFactory.getLogger(BuildCommand.class);
+		final Logger log = LoggerFactory.getLogger(BuildCommand.class); //NOSONAR
 
 		launcher.withContentEncoding(Charset.forName(contentEncoding));
 		launcher.withContentRoot(Paths.get(contentRoot));

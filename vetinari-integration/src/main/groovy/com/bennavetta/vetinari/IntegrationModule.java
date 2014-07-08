@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class IntegrationModule extends AbstractModule
 {
-	private final Logger log = LoggerFactory.getLogger(IntegrationModule.class);
+	private static final Logger LOG = LoggerFactory.getLogger(IntegrationModule.class);
 
 	@Override
 	protected void configure()
@@ -40,15 +40,15 @@ public class IntegrationModule extends AbstractModule
 
 	private <T> void tryBind(Multibinder<T> multibinder, String className)
 	{
-		log.debug("Trying to load {}", className);
+		LOG.debug("Trying to load {}", className);
 		try
 		{
 			multibinder.addBinding().to((Class<? extends T>) Class.forName(className));
-			log.debug("Successfully loaded {}", className);
+			LOG.debug("Successfully loaded {}", className);
 		}
 		catch (ClassNotFoundException e)
 		{
-			log.debug("Failed to load class", e);
+			LOG.debug("Failed to load class", e);
 		}
 	}
 }
