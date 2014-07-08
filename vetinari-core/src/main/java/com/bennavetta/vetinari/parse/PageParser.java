@@ -40,16 +40,8 @@ import java.util.Set;
 @Slf4j
 public class PageParser
 {
-	private final Set<Renderer> renderers;
-
 	private static final ImmutableMap<String, ConfigSyntax> DELIMITERS =
 			ImmutableMap.of("+++", ConfigSyntax.CONF, "---", ConfigSyntax.PROPERTIES, "~~~", ConfigSyntax.JSON);
-
-	@Inject
-	public PageParser(Set<Renderer> renderers)
-	{
-		this.renderers = renderers;
-	}
 
 	public Page parsePage(Path file, VetinariContext context) throws PageParseException
 	{
