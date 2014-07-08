@@ -17,7 +17,6 @@ package com.bennavetta.vetinari.parse;
 
 import com.bennavetta.vetinari.Page;
 import com.bennavetta.vetinari.VetinariContext;
-import com.bennavetta.vetinari.render.Renderer;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.CharStreams;
@@ -27,12 +26,10 @@ import com.typesafe.config.ConfigParseOptions;
 import com.typesafe.config.ConfigSyntax;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Set;
 
 /**
  * Parse content pages.
@@ -63,8 +60,7 @@ public class PageParser
 
 					final String delimiter = firstLine.trim();
 					final StringBuilder frontmatterBuilder = new StringBuilder();
-					String line = null;
-					while(!delimiter.equals(line))
+					for(String line = reader.readLine(); !delimiter.equals(line); line = reader.readLine())
 					{
 						if(line == null)
 						{
@@ -72,8 +68,6 @@ public class PageParser
 						}
 
 						frontmatterBuilder.append(line).append('\n');
-
-						line = reader.readLine();
 					}
 
 					metadata = ConfigFactory.parseString(frontmatterBuilder.toString(), ConfigParseOptions.defaults()
