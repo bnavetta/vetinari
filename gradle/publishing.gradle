@@ -30,7 +30,7 @@ allprojects {
 		publish = true
 
 		pkg {
-			repo = 'vetinari'
+			repo = 'maven'
 			name = 'vetinari'
 			desc = 'Vetinari static site generator'
 			websiteUrl = 'https://github.com/roguePanda/vetinari'
