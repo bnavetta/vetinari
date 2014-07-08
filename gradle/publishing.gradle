@@ -21,52 +21,31 @@ allprojects {
 	distTask.dependsOn 'publishMavenNebulaPublicationToDistMavenRepository'
 	distTask.outputs.dir rootProject.file('distMaven')
 	tasks.matching({ it.name == 'clean' }).all { cleanTask -> cleanTask.dependsOn('cleanDistribute')}
+
+	bintray {
+		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+		key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+
+		publications = ['mavenNebula']
+		publish = true
+
+		pkg {
+			repo = 'vetinari'
+			name = 'vetinari'
+			desc = 'Vetinari static site generator'
+			websiteUrl = 'https://github.com/roguePanda/vetinari'
+			issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
+			vcsUrl = 'https://github.com/roguePanda/vetinari.git'
+			licenses = ['Apache-2.0']
+			labels = ['gradle', 'static-site']
+		}
+	}
 }
 
 artifactoryPublish.skip = true
 
 // It seems that adding signing.* properties enables signing, which causes an error since the both the main jar file and
 // the signature (.asc) for the jar file have null classifiers, so the maven-publish plugin can't tell which is the main artifact
-
-subprojects {
-//	bintray {
-//		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
-//		key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
-//
-//		publications = ['mavenNebula']
-//		publish = true
-//
-//		pkg {
-//			repo = 'vetinari'
-//			name = 'vetinari'
-//			desc = 'Vetinari static site generator'
-//			websiteUrl = 'https://github.com/roguePanda/vetinari'
-//			issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
-//			vcsUrl = 'https://github.com/roguePanda/vetinari.git'
-//			licenses = ['Apache-2.0']
-//			labels = ['gradle', 'static-site']
-//		}
-//	}
-}
-
-bintray {
-	user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
-	key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
-
-	publications = ['mavenNebula']
-	publish = true
-
-	pkg {
-		repo = 'vetinari'
-		name = 'vetinari'
-		desc = 'Vetinari static site generator'
-		websiteUrl = 'https://github.com/roguePanda/vetinari'
-		issueTrackerUrl = 'https://github.com/roguePanda/vetinari/issues'
-		vcsUrl = 'https://github.com/roguePanda/vetinari.git'
-		licenses = ['Apache-2.0']
-		labels = ['gradle', 'static-site']
-	}
-}
 
 artifactory {
 	contextUrl = 'https://oss.jfrog.org'
