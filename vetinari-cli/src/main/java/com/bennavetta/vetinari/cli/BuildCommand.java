@@ -19,16 +19,16 @@ public class BuildCommand
 	@Parameter(names = {"--content-encoding"}, description = "Content encoding for source files")
 	public String contentEncoding = "UTF-8";
 
-	@Parameter(names = {"--content-root"}, description = "Directory containing page content")
+	@Parameter(names = {"--content-root"}, description = "Directory containing page content", required=true)
 	public String contentRoot;
 
-	@Parameter(names = {"--template-root"}, description = "Directory containing template files")
+	@Parameter(names = {"--template-root"}, description = "Directory containing template files", required=true)
 	public String templateRoot;
 
-	@Parameter(names = {"--output-root"}, description = "Directory to place generated files")
+	@Parameter(names = {"--output-root"}, description = "Directory to place generated files", required=true)
 	public String outputRoot;
 
-	@Parameter(names = {"--site-config"}, description = "Site configuration file")
+	@Parameter(names = {"--site-config"}, description = "Site configuration file", required=true)
 	public String siteConfig;
 
 	public void run()
