@@ -26,12 +26,6 @@ subprojects {
 	apply plugin: 'license'
 	apply plugin: 'groovy'
 
-	apply plugin: 'checkstyle'
-	checkstyle {
-		configFile = rootProject.file('config/checkstyle.xml')
-		ignoreFailures = true // Doesn't support Java 8 yet
-	}
-
 	contacts {
 		'ben.navetta@gmail.com' {
 			moniker 'Ben Navetta'
@@ -43,6 +37,10 @@ subprojects {
 		header rootProject.file('config/HEADER')
 		ext.year = Year.now().value
 		skipExistingHeaders true
+
+		mapping {
+			txt = 'SCRIPT_STYLE'
+		}
 	}
 
 	sourceCompatibility = 1.8
