@@ -24,7 +24,9 @@ allprojects {
 subprojects {
 	apply plugin: 'nebula-project'
 	apply plugin: 'license'
+	apply plugin: 'jacoco'
 	apply plugin: 'groovy'
+
 
 	contacts {
 		'ben.navetta@gmail.com' {
@@ -40,6 +42,14 @@ subprojects {
 
 		mapping {
 			txt = 'SCRIPT_STYLE'
+		}
+	}
+
+	jacocoTestReport {
+		reports {
+			xml.enabled true
+			csv.enabled false
+			html.enabled true
 		}
 	}
 
