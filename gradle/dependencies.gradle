@@ -3,10 +3,9 @@ subprojects {
 		jcenter()
 		mavenCentral()
 		maven { url 'http://oss.jfrog.org/artifactory/repo' }
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 	}
 
 	dependencies {
-		testCompile 'org.spockframework:spock-core:1.0-groovy-2.0-SNAPSHOT'
+		testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 	}
 }
