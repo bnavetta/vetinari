@@ -65,7 +65,7 @@ public class Site
 	 */
 	public String getTitle()
 	{
-		return siteConfig.hasPath("title") ? siteConfig.getString("title") : null;
+		return siteConfig.getString("title");
 	}
 
 	/**
