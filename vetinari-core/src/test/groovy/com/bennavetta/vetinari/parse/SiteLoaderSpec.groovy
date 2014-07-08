@@ -42,8 +42,6 @@ class SiteLoaderSpec extends AbstractVetinariSpec
 		e.cause instanceof IOException
 	}
 
-	// ignores directories, single page, multiple pages, nested pages
-
 	def "ignores directories"()
 	{
 		given:
@@ -59,5 +57,58 @@ class SiteLoaderSpec extends AbstractVetinariSpec
 		then:
 		site.getPage('myfile') != null
 		site.getPage('mydir') == null
+	}
+
+	def "can load single page"()
+	{
+		given:
+		VetinariContext context = createContext()
+		Path file = context.contentRoot.resolve('page.txt')
+		file.write 'This is a page', context.contentEncoding.name()
+
+		when:
+		Site site = loader.load(context)
+
+		then:
+		site.pages.size() == 1
+		site.getPage('page').content == 'This is a page\n'
+	}
+
+	def "can load multiple pages"()
+	{
+		given:
+		VetinariContext context = createContext()
+		Path fileA = context.contentRoot.resolve('fileA.html')
+		fileA.write 'This is file A'
+		Path fileB = context.contentRoot.resolve('fileB.html')
+		fileB.write 'This is file B'
+
+		when:
+		Site site = loader.load(context)
+
+		then:
+		site.pages.size() == 2
+		site.getPage('fileA').content == 'This is file A\n'
+		site.getPage('fileB').content == 'This is file B\n'
+	}
+
+	def "can load pages in subdirectories"()
+	{
+		given:
+		VetinariContext context = createContext()
+		Path rootFile = context.contentRoot.resolve('root.html')
+		rootFile.write 'In content root'
+		Path dir = context.contentRoot.resolve('subdir')
+		Files.createDirectory(dir)
+		Path subFile = dir.resolve('sub.html')
+		subFile.write 'In subdir'
+
+		when:
+		Site site = loader.load(context)
+
+		then:
+		site.pages.size() == 2
+		site.getPage('root').content == 'In content root\n'
+		site.getPage('subdir/sub').content == 'In subdir\n'
 	}
 }
