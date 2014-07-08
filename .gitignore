@@ -1,4 +1,5 @@
 distMaven/
 build/
-!vetinari-core/src/main/groovy/com/bennavetta/vetinari/build/
+!vetinari-core/src/main/java/com/bennavetta/vetinari/build/
+!vetinari-core/src/test/groovy/com/bennavetta/vetinari/build/
 .gradle/
