@@ -1,34 +1,8 @@
-def testTasks = []
-def mainSources = []
-
-subprojects.each { sub ->
-	mainSources << sub.sourceSets.main
-	sub.tasks.withType(Test) { task ->
-		testTasks << task
-	}
-}
-
-task aggregateTestReport(type: TestReport) {
-	destinationDir = file("$buildDir/reports/tests")
-
-	reportOn testTasks
-	dependsOn testTasks
-}
+// JaCoCo Reporting
 
 apply plugin: 'jacoco'
 
 task mergeCodeCoverage(type: JacocoMerge) {
-
-	testTasks.each { task ->
-		def extension = task.extensions.findByType(JacocoTaskExtension)
-		if(extension)
-		{
-			println extension.destinationFile
-			executionData(extension.destinationFile)
-		}
-		dependsOn task
-	}
-
 	destinationFile = file("$buildDir/jacoco/merged.exec")
 
 	doFirst {
@@ -42,8 +16,8 @@ task aggregateCodeCoverageReport(type: JacocoReport) {
 
 	dependsOn mergeCodeCoverage
 	executionData mergeCodeCoverage.destinationFile
-	mainSources.each {
-		sourceSets it
+	subprojects.each { sub ->
+		sourceSets sub.sourceSets.main
 	}
 
 	reports {
@@ -57,6 +31,24 @@ task aggregateCodeCoverageReport(type: JacocoReport) {
 		}
 	}
 }
+
+// Test Reporting
+
+task aggregateTestReport(type: TestReport) {
+	destinationDir = file("$buildDir/reports/tests")
+}
+
+// Subproject Aggregation
+
+subprojects.each { sub ->
+	sub.tasks.withType(Test) { task -> // using withType picks up tasks like integrationTest
+		println task
+		mergeCodeCoverage.executionData task
+		aggregateTestReport.reportOn task
+	}
+}
+
+// Check Task
 
 def checkTask = tasks.findByName('check') ?: tasks.create('check')
 
