@@ -15,6 +15,7 @@
  */
 package com.bennavetta.vetinari.test
 
+import com.bennavetta.vetinari.Page
 import com.bennavetta.vetinari.VetinariContext
 import com.google.common.base.Charsets
 import com.google.common.jimfs.Configuration
@@ -37,6 +38,7 @@ abstract class AbstractVetinariSpec extends Specification
 	{
 		// TODO: some way to switch between OS X, Windows, and UNIX configurations
 		fs = Jimfs.newFileSystem("vetinari-test-${getClass().simpleName}", Configuration.unix())
+		println fs
 	}
 
 	def cleanup()
