@@ -1,3 +1,5 @@
+apply plugin: 'nebula-integtest'
+
 configurations {
 	provided
 	compile.extendsFrom provided
@@ -19,6 +21,10 @@ dependencies {
 
 	testCompile 'com.google.jimfs:jimfs:latest.release'
 }
+
+//jacoco {
+//	applyTo integrationTest
+//}
 
 task delombok(type: JavaExec) {
 	classpath sourceSets.main.compileClasspath

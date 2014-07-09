@@ -1,0 +1,63 @@
+def testTasks = []
+def mainSources = []
+
+subprojects.each { sub ->
+	mainSources << sub.sourceSets.main
+	sub.tasks.withType(Test) { task ->
+		testTasks << task
+	}
+}
+
+task aggregateTestReport(type: TestReport) {
+	destinationDir = file("$buildDir/reports/tests")
+
+	reportOn testTasks
+	dependsOn testTasks
+}
+
+apply plugin: 'jacoco'
+
+task mergeCodeCoverage(type: JacocoMerge) {
+
+	testTasks.each { task ->
+		def extension = task.extensions.findByType(JacocoTaskExtension)
+		if(extension)
+		{
+			println extension.destinationFile
+			executionData(extension.destinationFile)
+		}
+		dependsOn task
+	}
+
+	destinationFile = file("$buildDir/jacoco/merged.exec")
+
+	doFirst {
+		executionData -= executionData.filter { !it.exists() }
+	}
+}
+
+task aggregateCodeCoverageReport(type: JacocoReport) {
+
+	jacocoClasspath = configurations.jacocoAnt
+
+	dependsOn mergeCodeCoverage
+	executionData mergeCodeCoverage.destinationFile
+	mainSources.each {
+		sourceSets it
+	}
+
+	reports {
+		html {
+			enabled true
+			destination file("$buildDir/reports/jacoco/html")
+		}
+		xml {
+			enabled true
+			destination file("$buildDir/reports/jacoco/jacocoReport.xml")
+		}
+	}
+}
+
+def checkTask = tasks.findByName('check') ?: tasks.create('check')
+
+checkTask.dependsOn aggregateCodeCoverageReport, aggregateTestReport

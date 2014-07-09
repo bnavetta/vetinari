@@ -68,6 +68,8 @@ apply from: 'gradle/release.gradle'
 
 apply from: 'gradle/sonar.gradle'
 
+apply from: 'gradle/reporting.gradle'
+
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.0'
 }
