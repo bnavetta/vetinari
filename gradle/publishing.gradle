@@ -40,6 +40,9 @@ allprojects {
 			labels = ['gradle', 'static-site']
 		}
 	}
+
+	bintrayUpload.dependsOn publish
+	artifactoryPublish.dependsOn publish
 }
 
 artifactoryPublish.skip = true
