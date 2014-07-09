@@ -36,6 +36,10 @@ task aggregateCodeCoverageReport(type: JacocoReport) {
 
 task aggregateTestReport(type: TestReport) {
 	destinationDir = file("$buildDir/reports/tests")
+
+	doFirst {
+		println testResultDirs as List
+	}
 }
 
 // Subproject Aggregation
