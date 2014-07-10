@@ -15,13 +15,23 @@
  */
 package com.bennavetta.vetinari.render;
 
-import com.bennavetta.vetinari.Engine;
-
 /**
  * A {@code Renderer} converts input markup, like Markdown, and generates HTML content.
  */
-public interface Renderer extends Engine
+public interface Renderer
 {
+	/**
+	 * Returns the unique name identifying this renderer. It is used mainly for settings like
+	 * {@code renderer} in page metadata or {@code defaultRenderer} in the site configuration.
+	 */
+	public String getName();
+
+	/**
+	 * Returns the file extensions associated with this renderer. These are mainly to detect the renderer
+	 * to use from path names.
+	 */
+	public Iterable<String> getFileExtensions();
+
 	/**
 	 * Process the given content source and generate the output content.
 	 * @param source the source, usually markup of some kind.

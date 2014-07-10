@@ -15,13 +15,23 @@
  */
 package com.bennavetta.vetinari.template;
 
-import com.bennavetta.vetinari.Engine;
-
 /**
  * A {@code TemplateEngine} applies logic to page content.
  */
-public interface TemplateEngine extends Engine
+public interface TemplateEngine
 {
+	/**
+	 * Returns the unique name identifying this engine. It is used mainly for settings like
+	 * {@code templateEngine} in page metadata or {@code defaultTemplateEngine} in the site configuration.
+	 */
+	public String getName();
+
+	/**
+	 * Returns the file extensions associated with this engine. These are mainly to detect the engine
+	 * to use from path names.
+	 */
+	public Iterable<String> getFileExtensions();
+
 	/**
 	 * Compile the given template source so that it can later be rendered.
 	 * @param source the template source code
