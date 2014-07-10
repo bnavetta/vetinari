@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bennavetta.vetinari.build;
+package com.bennavetta.vetinari.build.internal;
 
-import com.bennavetta.vetinari.build.phase.DefaultOutputPhase;
-import com.bennavetta.vetinari.build.phase.LayoutPhase;
-import com.bennavetta.vetinari.build.phase.RenderPhase;
-import com.bennavetta.vetinari.build.phase.TemplatePhase;
+import com.bennavetta.vetinari.build.BuildPhase;
+import com.bennavetta.vetinari.build.SiteBuilder;
+import com.bennavetta.vetinari.build.internal.phase.DefaultOutputPhase;
+import com.bennavetta.vetinari.build.internal.phase.LayoutPhase;
+import com.bennavetta.vetinari.build.internal.phase.RenderPhase;
+import com.bennavetta.vetinari.build.internal.phase.TemplatePhase;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 

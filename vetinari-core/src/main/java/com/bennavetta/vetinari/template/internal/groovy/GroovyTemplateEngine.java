@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bennavetta.vetinari.template.groovy;
+package com.bennavetta.vetinari.template.internal.groovy;
 
 import com.bennavetta.vetinari.template.Template;
 import com.bennavetta.vetinari.template.TemplateEngine;

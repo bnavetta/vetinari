@@ -18,7 +18,6 @@ package com.bennavetta.vetinari.parse
 import com.bennavetta.vetinari.Page
 import com.bennavetta.vetinari.VetinariContext
 import com.bennavetta.vetinari.test.AbstractVetinariSpec
-import com.google.common.base.Charsets
 import com.typesafe.config.ConfigFactory
 
 import java.nio.file.Files

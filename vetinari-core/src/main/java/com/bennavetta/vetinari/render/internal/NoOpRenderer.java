@@ -13,19 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bennavetta.vetinari.parse;
+package com.bennavetta.vetinari.render.internal;
 
-import com.google.inject.AbstractModule;
+import com.bennavetta.vetinari.render.Renderer;
+import com.google.common.collect.ImmutableSet;
 
 /**
- * Guice module for parsing and loading.
+ * Does nothing.
  */
-public class ParseModule extends AbstractModule
+public class NoOpRenderer implements Renderer
 {
 	@Override
-	protected void configure()
+	public String render(String source)
 	{
-		bind(PageParser.class);
-		bind(SiteLoader.class);
+		return source;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "noOp";
+	}
+
+	@Override
+	public Iterable<String> getFileExtensions()
+	{
+		return ImmutableSet.of();
 	}
 }

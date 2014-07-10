@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bennavetta.vetinari.build.phase
+package com.bennavetta.vetinari.build.internal.phase
 
 import com.bennavetta.vetinari.Page
 import com.bennavetta.vetinari.Site
 import com.bennavetta.vetinari.template.TemplateLoader
-import com.bennavetta.vetinari.template.groovy.GroovyTemplateEngine
+import com.bennavetta.vetinari.template.internal.groovy.GroovyTemplateEngine
 import com.bennavetta.vetinari.test.AbstractVetinariSpec
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets

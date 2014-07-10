@@ -15,10 +15,10 @@
  */
 package com.bennavetta.vetinari.launch
 
-import com.bennavetta.vetinari.build.BuildModule
-import com.bennavetta.vetinari.parse.ParseModule
-import com.bennavetta.vetinari.render.RenderModule
-import com.bennavetta.vetinari.template.TemplateModule
+import com.bennavetta.vetinari.build.internal.BuildModule
+import com.bennavetta.vetinari.parse.internal.ParseModule
+import com.bennavetta.vetinari.render.internal.RenderModule
+import com.bennavetta.vetinari.template.internal.TemplateModule
 import spock.lang.Specification
 
 class ModuleLoaderSpec extends Specification

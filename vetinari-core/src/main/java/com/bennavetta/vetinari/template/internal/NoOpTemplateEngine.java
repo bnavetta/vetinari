@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bennavetta.vetinari.template;
+package com.bennavetta.vetinari.template.internal;
 
+import com.bennavetta.vetinari.template.Template;
+import com.bennavetta.vetinari.template.TemplateEngine;
 import com.google.common.collect.ImmutableSet;
 import lombok.AllArgsConstructor;
 

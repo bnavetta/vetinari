@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-com.bennavetta.vetinari.build.BuildModule
-com.bennavetta.vetinari.parse.ParseModule
-com.bennavetta.vetinari.render.RenderModule
-com.bennavetta.vetinari.template.TemplateModule
+com.bennavetta.vetinari.build.internal.BuildModule
+com.bennavetta.vetinari.parse.internal.ParseModule
+com.bennavetta.vetinari.render.internal.RenderModule
+com.bennavetta.vetinari.template.internal.TemplateModule

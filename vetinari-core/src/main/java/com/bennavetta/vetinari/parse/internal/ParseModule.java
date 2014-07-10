@@ -13,25 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bennavetta.vetinari.template;
+package com.bennavetta.vetinari.parse.internal;
 
-import com.bennavetta.vetinari.template.groovy.GroovyTemplateEngine;
+import com.bennavetta.vetinari.parse.PageParser;
+import com.bennavetta.vetinari.parse.SiteLoader;
 import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
 
 /**
- * Module providing template functionality.
+ * Guice module for parsing and loading.
  */
-public class TemplateModule extends AbstractModule
+public class ParseModule extends AbstractModule
 {
 	@Override
 	protected void configure()
 	{
-		Multibinder<TemplateEngine> templateEngineBinder =
-				Multibinder.newSetBinder(binder(), TemplateEngine.class);
-		templateEngineBinder.addBinding().to(NoOpTemplateEngine.class);
-		templateEngineBinder.addBinding().to(GroovyTemplateEngine.class);
-
-		bind(TemplateLoader.class);
+		bind(PageParser.class);
+		bind(SiteLoader.class);
 	}
 }
