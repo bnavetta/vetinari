@@ -1,5 +1,14 @@
 allprojects {
-	apply plugin: 'artifactory-publish'
+	if(!project.hasProperty('bintrayUser'))
+	{
+		project.bintrayUser = System.getenv('BINTRAY_USER')
+	}
+	if(!project.hasProperty('bintrayKey'))
+	{
+		project.bintrayKey = System.getenv('BINTRAY_KEY')
+	}
+
+	apply plugin: 'com.jfrog.artifactory-publish'
 	apply plugin: 'com.jfrog.bintray'
 	apply plugin: 'maven-publish'
 	apply plugin: 'nebula-publishing'
@@ -23,8 +32,8 @@ allprojects {
 	tasks.matching({ it.name == 'clean' }).all { cleanTask -> cleanTask.dependsOn('cleanDistribute')}
 
 	bintray {
-		user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
-		key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+		user = project.bintrayUser
+		key = project.bintrayKey
 
 		publications = ['mavenNebula']
 		publish = true
@@ -60,9 +69,9 @@ artifactory {
 	publish {
 		repository {
 			repoKey = 'oss-snapshot-local'
-			username = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
-			password = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
-			maven = true
+			username = project.bintrayUser
+			password = project.bintrayKey
+			mavenCompatible = true
 		}
 		defaults {
 			publications 'mavenNebula'
