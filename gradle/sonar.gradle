@@ -3,8 +3,11 @@ apply plugin: 'sonar-runner'
 sonarRunner {
 	sonarProperties {
 		property "sonar.projectName", "Vetinari"
-		property "sonar.host.url", "http://localhost:9000"
-		property "sonar.analysis.mode", "incremental"
+		property "sonar.host.url", "http://sarek:9000"
+		property "sonar.jdbc.url", "jdbc:postgresql://sarek/sonar"
+		property "sonar.jdbc.username", "sonarqube"
+		property "sonar.jdbc.password", project.sonarDbPassword
+		property "sonar.analysis.mode", project.hasProperty("sonarMode") ? project.sonarMode : "analysis" // analysis, preview, incremental
 		property "sonar.issuesReport.html.enable", "true"
 		property "sonar.issuesReport.console.enable", "true"
 		property "sonar.profile", "Vetinari"
