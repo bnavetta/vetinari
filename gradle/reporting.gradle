@@ -46,7 +46,6 @@ task aggregateTestReport(type: TestReport) {
 
 subprojects.each { sub ->
 	sub.tasks.withType(Test) { task -> // using withType picks up tasks like integrationTest
-		println task
 		mergeCodeCoverage.executionData task
 		aggregateTestReport.reportOn task
 	}
