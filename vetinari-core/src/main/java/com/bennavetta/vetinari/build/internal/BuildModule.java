@@ -16,11 +16,9 @@
 package com.bennavetta.vetinari.build.internal;
 
 import com.bennavetta.vetinari.build.BuildPhase;
+import com.bennavetta.vetinari.build.PathGenerator;
 import com.bennavetta.vetinari.build.SiteBuilder;
-import com.bennavetta.vetinari.build.internal.phase.DefaultOutputPhase;
-import com.bennavetta.vetinari.build.internal.phase.LayoutPhase;
-import com.bennavetta.vetinari.build.internal.phase.RenderPhase;
-import com.bennavetta.vetinari.build.internal.phase.TemplatePhase;
+import com.bennavetta.vetinari.build.internal.phase.*;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 
@@ -38,6 +36,10 @@ public class BuildModule extends AbstractModule
 		buildPhaseMultibinder.addBinding().to(TemplatePhase.class);
 		buildPhaseMultibinder.addBinding().to(RenderPhase.class);
 		buildPhaseMultibinder.addBinding().to(LayoutPhase.class);
-		buildPhaseMultibinder.addBinding().to(DefaultOutputPhase.class);
+		buildPhaseMultibinder.addBinding().to(PathGenerationPhase.class);
+		buildPhaseMultibinder.addBinding().to(OutputPhase.class);
+
+		Multibinder<PathGenerator> pathGeneratorMultibinder = Multibinder.newSetBinder(binder(), PathGenerator.class);
+		pathGeneratorMultibinder.addBinding().to(DefaultPathGenerator.class);
 	}
 }

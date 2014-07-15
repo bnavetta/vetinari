@@ -38,16 +38,3 @@ task delombok(type: JavaExec) {
 
 javadoc.dependsOn delombok
 javadoc.source = "$buildDir/delombok"
-
-sonarRunner {
-	sonarProperties {
-//		property "sonar.sources", "$buildDir/delombok"
-// Delombok changes the formatting sometimes, and it uses a different style than I do
-	}
-}
-rootProject.tasks.sonarRunner.dependsOn delombok
-
-// License headers interfere with frontmatter parsing
-licenseIntegTest {
-	source = source.filter { !it.toString().contains('integTest/resources/') }
-}

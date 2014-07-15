@@ -1,3 +1,5 @@
+import nl.javadude.gradle.plugins.license.License
+
 import java.time.Year
 
 buildscript {
@@ -57,6 +59,14 @@ subprojects {
 
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
+
+	project.afterEvaluate { project ->
+		project.tasks.withType(License).each { licenseTask ->
+			// The license interferes with metadata parsing
+			licenseTask.exclude '**/*.html'
+			licenseTask.exclude '**/*.md'
+		}
+	}
 }
 
 // Apply after the groovy plugin

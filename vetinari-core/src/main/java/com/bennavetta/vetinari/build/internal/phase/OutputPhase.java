@@ -20,28 +20,31 @@ import com.bennavetta.vetinari.Site;
 import com.bennavetta.vetinari.VetinariContext;
 import com.bennavetta.vetinari.VetinariException;
 import com.bennavetta.vetinari.build.BuildPhase;
-
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Output pages to the default locations. This can be disabled by setting {@code outputDefaultFile}
- * to {@code false} in the site configuration file if other output mechanisms are used, like pretty URLs.
+ * Writes pages out using their {@code outputPath} values and the site's {@code outputRoot}.
  */
 @Slf4j
-public class DefaultOutputPhase implements BuildPhase
+public class OutputPhase implements BuildPhase
 {
 	private final VetinariContext context;
 
 	@Inject
-	public DefaultOutputPhase(VetinariContext context)
+	public OutputPhase(VetinariContext context)
 	{
 		this.context = context;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "output";
 	}
 
 	@Override
@@ -49,23 +52,18 @@ public class DefaultOutputPhase implements BuildPhase
 	{
 		try
 		{
-			for (Page page : site.getPages())
+			for(Page page : site.getPages())
 			{
-				Path outputPath = context.getOutputRoot().resolve(page.getIdentifier() + ".html");
+				Path outputPath = context.getOutputRoot().resolve(page.getMetadata().getString("outputPath"));
 				log.info("Writing {} to {}", page, outputPath);
 				Files.write(outputPath, page.getContent().getBytes(context.getContentEncoding()));
 			}
-			return site; // allow for more outputs/processing
 		}
 		catch(IOException e)
 		{
 			throw new VetinariException("Unable to write output file", e);
 		}
-	}
 
-	@Override
-	public String getName()
-	{
-		return "defaultOutput";
+		return site;
 	}
 }

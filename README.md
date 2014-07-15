@@ -92,6 +92,6 @@ The `--verbose` and `--debug` flags can be used for more output.
 
 * Rename `vetinari-integration` to `vetinari-impl` and move **all** implementations of core interfaces there. It should also be a dependency of `vetinari-cli`.
 * Add a subproject for integration tests that can run both Gradle and CLI projects
-* Replace `DefaultOutputPhase` with a mechanism for determining output paths and a phase that uses them. The output paths should be available in pages for links (i.e. Pegdown's wiki links).
+* Add a `BuildPhase` implementation for phases that just process each page individually
 * Add documentation and tests
 * Changelog
