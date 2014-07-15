@@ -11,8 +11,8 @@ allprojects {
 	if(System.getenv('JENKINS_BINTRAY_CREDENTIALS'))
 	{
 		def credentials = System.getenv('JENKINS_BINTRAY_CREDENTIALS').split(':')
-		project.bintrayUser = credentials[0]
-		project.bintrayKey = credentials[1]
+		project.ext.bintrayUser = credentials[0]
+		project.ext.bintrayKey = credentials[1]
 	}
 
 	apply plugin: 'com.jfrog.artifactory-publish'
