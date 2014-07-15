@@ -12,8 +12,8 @@ if(!project.hasProperty('sonarDbPassword'))
 if(System.getenv('SONAR_DB_CREDENTIALS'))
 {
 	def credentials = System.getenv('SONAR_DB_CREDENTIALS').split(':')
-	project.ext.sonarDbUser = parts[0]
-	project.ext.sonarDbPassword = parts[1]
+	project.ext.sonarDbUser = credentials[0]
+	project.ext.sonarDbPassword = credentials[1]
 }
 
 sonarRunner {
