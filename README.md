@@ -50,7 +50,7 @@ buildscript {
 	}
 }
 
-apply plugin: 'vetinari'
+apply plugin: 'com.bennavetta.vetinari'
 
 repositories {
 	jcenter()
@@ -95,4 +95,3 @@ The `--verbose` and `--debug` flags can be used for more output.
 * Replace `DefaultOutputPhase` with a mechanism for determining output paths and a phase that uses them. The output paths should be available in pages for links (i.e. Pegdown's wiki links).
 * Add documentation and tests
 * Changelog
-* Rename `vetinari-gradle` plugin ID to conform with the [Gradle plugin portal](http://plugins.gradle.org) recommendations (i.e. `com.bennavetta.vetinari`)
