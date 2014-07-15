@@ -20,6 +20,8 @@ package com.bennavetta.vetinari;
  */
 public class VetinariException extends Exception
 {
+	private static final long serialVersionUID = 2235753024816610062L;
+
 	public VetinariException(String message)
 	{
 		super(message);

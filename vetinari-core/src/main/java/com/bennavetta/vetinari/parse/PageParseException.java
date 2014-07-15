@@ -22,6 +22,8 @@ import com.bennavetta.vetinari.VetinariException;
  */
 public class PageParseException extends VetinariException
 {
+	private static final long serialVersionUID = 8690200811596348464L;
+
 	public PageParseException(String message)
 	{
 		super(message);

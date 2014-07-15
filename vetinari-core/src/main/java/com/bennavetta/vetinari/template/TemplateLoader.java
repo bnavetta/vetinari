@@ -50,7 +50,7 @@ public class TemplateLoader
 	{
 		this.context = context;
 		this.templateEngines = templateEngines;
-		this.defaultTemplateEngine = Iterables.find(templateEngines, t -> t.getName().equals(context.getSiteConfig().getString("defaultTemplateEngine")));
+		this.defaultTemplateEngine = Iterables.find(this.templateEngines, t -> t.getName().equals(this.context.getSiteConfig().getString("defaultTemplateEngine")));
 
 		this.templateCache = CacheBuilder.newBuilder().build(new CacheLoader<String, Template>()
 		{

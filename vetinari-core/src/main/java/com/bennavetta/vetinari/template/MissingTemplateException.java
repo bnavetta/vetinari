@@ -22,6 +22,8 @@ import java.nio.file.Path;
  */
 public class MissingTemplateException extends RuntimeException
 {
+	private static final long serialVersionUID = -1656618673424828278L;
+
 	/**
 	 * Creates a new exception indicating that a template could not be found.
 	 * @param templateDir the directory containing template files
