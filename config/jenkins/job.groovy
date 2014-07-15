@@ -23,7 +23,7 @@ job {
 }
 
 job {
-    name 'Vetinari-check'
+    name 'Vetinari-test'
 
     scm {
         git gitUrl
@@ -40,7 +40,6 @@ job {
 
     publishers {
         archiveJunit '*/build/test-results/*.xml'
-        archiveJunit '*/build/integTest-results/*.xml'
 
         publishHtml {
             report 'build/reports/tests', 'Test Results'
@@ -51,6 +50,23 @@ job {
             execPattern 'build/jacoco/merged.exec'
         }
 
+        downstream('Vetinari-integTest', 'SUCCESS')
+    }
+}
+
+job {
+    name 'Vetinari-integTest'
+
+    scm {
+        git gitUrl
+    }
+
+    steps {
+        gradle('integrationTest')
+    }
+
+    publishers {
+        archiveJunit '*/build/integTest-results/*.xml'
         downstream('Vetinari-publish', 'SUCCESS')
     }
 }
@@ -71,6 +87,19 @@ job {
         archiveArtifacts {
             pattern 'distMaven/**/*'
             latestOnly true
+        }
+    }
+
+    configure { project ->
+        project / buildWrappers / 'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'(plugin: 'credentials-binding@1.0') << {
+
+        }
+
+        project / buildWrappers / 'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper' << bindings {
+            'org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding' {
+                variable 'JENKINS_BINTRAY_CREDENTIALS'
+                credentialsId '96d03dbc-15ad-4289-a82d-19e43dcb9bcb'
+            }
         }
     }
 }
