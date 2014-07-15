@@ -15,22 +15,20 @@
  */
 package com.bennavetta.vetinari.build;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.bennavetta.vetinari.Site;
 import com.bennavetta.vetinari.VetinariContext;
 import com.bennavetta.vetinari.VetinariException;
 import com.bennavetta.vetinari.parse.SiteLoader;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.inject.Singleton;
-
-import lombok.extern.slf4j.Slf4j;
-
-import javax.inject.Inject;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Build a site by applying {@link BuildPhase}s in order.
@@ -60,6 +58,7 @@ public class SiteBuilder
 	public void build() throws VetinariException
 	{
 		Site site = siteLoader.load(context);
+		
 
 		List<BuildPhase> runList = context.getSiteConfig().getStringList("phases").stream()
 			.map(name -> Iterables.find(phases, phase -> name.equals(phase.getName())))
