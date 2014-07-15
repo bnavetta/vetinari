@@ -20,6 +20,19 @@ job {
             report 'build/sonar/issues-report', 'Code Quality'
         }
     }
+
+    configure { project ->
+        project / buildWrappers / 'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'(plugin: 'credentials-binding@1.0') << {
+
+        }
+
+        project / buildWrappers / 'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper' << bindings {
+            'org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding' {
+                variable 'SONAR_DB_CREDENTIALS'
+                credentialsId 'd0ffa9ef-c121-4b31-b680-5fdbecd4c47a'
+            }
+        }
+    }
 }
 
 job {
@@ -31,7 +44,7 @@ job {
 
     triggers {
         //githubPush() // Can't use github hooks since the Jenkins server is local
-        scm('*/15 * * * *')
+        scm('*/5 * * * *')
     }
 
     steps {

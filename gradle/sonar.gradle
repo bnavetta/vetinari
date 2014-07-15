@@ -1,11 +1,27 @@
 apply plugin: 'sonar-runner'
 
+if(!project.hasProperty('sonarDbUser'))
+{
+	project.ext.sonarDbUser = System.getenv('SONAR_DB_USER')
+}
+if(!project.hasProperty('sonarDbPassword'))
+{
+	project.ext.sonarDbPassword = System.getenv('SONAR_DB_PASSWORD')
+}
+
+if(System.getenv('SONAR_DB_CREDENTIALS'))
+{
+	def credentials = System.getenv('SONAR_DB_CREDENTIALS').split(':')
+	project.ext.sonarDbUser = parts[0]
+	project.ext.sonarDbPassword = parts[1]
+}
+
 sonarRunner {
 	sonarProperties {
 		property "sonar.projectName", "Vetinari"
 		property "sonar.host.url", "http://sarek:9000"
 		property "sonar.jdbc.url", "jdbc:postgresql://sarek/sonar"
-		property "sonar.jdbc.username", "sonarqube"
+		property "sonar.jdbc.username", project.sonarDbUser
 		property "sonar.jdbc.password", project.sonarDbPassword
 		property "sonar.analysis.mode", project.hasProperty("sonarMode") ? project.sonarMode : "analysis" // analysis, preview, incremental
 		property "sonar.issuesReport.html.enable", "true"
