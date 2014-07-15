@@ -12,7 +12,7 @@ job {
     }
 
     steps {
-        gradle 'sonarRunner'
+        gradle 'clean sonarRunner'
     }
 
     publishers {
@@ -48,7 +48,7 @@ job {
     }
 
     steps {
-        gradle('check')
+        gradle('clean check')
     }
 
     publishers {
@@ -75,7 +75,7 @@ job {
     }
 
     steps {
-        gradle('integrationTest')
+        gradle('clean integrationTest')
     }
 
     publishers {
@@ -92,7 +92,7 @@ job {
     }
 
     steps {
-        gradle('publish')
+        gradle('clean publish')
         gradle('artifactoryPublish')
     }
 
