@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
 import javax.inject.Inject;
+
 import java.util.Set;
 
 import static com.google.common.io.Files.getFileExtension;
@@ -40,12 +41,6 @@ public class TemplatePhase implements BuildPhase
 	public TemplatePhase(Set<TemplateEngine> templateEngines)
 	{
 		this.templateEngines = templateEngines;
-	}
-
-	@Override
-	public int getOrder()
-	{
-		return BuildPhase.ORDER_TEMPLATE;
 	}
 
 	@Override
@@ -78,5 +73,11 @@ public class TemplatePhase implements BuildPhase
 			templateEngine = Iterables.find(templateEngines, t -> site.getDefaultTemplateEngine().equals(t.getName()));
 		}
 		return templateEngine;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "template";
 	}
 }

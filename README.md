@@ -90,8 +90,6 @@ The `--verbose` and `--debug` flags can be used for more output.
 
 ## Roadmap / TODO
 
-* Instead of using numerical ordering for phases, declare a list of phases (by name) in the site configuration file. It's safer and also probably better not to
-  automatically include phases.
 * Replace `DefaultOutputPhase` with a mechanism for determining output paths and a phase that uses them. The output paths should be available in pages for links (i.e. Pegdown's wiki links).
 * Add documentation and tests
 * Changelog

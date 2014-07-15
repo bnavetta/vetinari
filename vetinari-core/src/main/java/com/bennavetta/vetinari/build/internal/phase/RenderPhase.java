@@ -41,12 +41,6 @@ public class RenderPhase implements BuildPhase
 	}
 
 	@Override
-	public int getOrder()
-	{
-		return BuildPhase.ORDER_RENDER;
-	}
-
-	@Override
 	public Site process(Site input)
 	{
 		return input.transformPages(page -> page.withContent(getRenderer(page, input).render(page.getContent())));
@@ -72,5 +66,11 @@ public class RenderPhase implements BuildPhase
 			renderer = Iterables.find(renderers, r -> site.getDefaultRenderer().equals(r.getName()));
 		}
 		return renderer;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "render";
 	}
 }

@@ -25,13 +25,14 @@ class SiteBuilderSpec extends AbstractVetinariSpec
 {
 	def "build phase order respected"()
 	{
-		// something with mocks and inputs
-
 		given:
 		def phaseA = Mock(BuildPhase)
 		def phaseB = Mock(BuildPhase)
+		
+		phaseA.getName() >> "phaseA"
+		phaseB.getName() >> "phaseB"
 
-		def context = createContext()
+		def context = createContext('my-context', [phases: ['phaseA', 'phaseB']])
 		def builder = new SiteBuilder(new SiteLoader(new PageParser()), context, [phaseA, phaseB] as Set)
 		Files.createFile(context.contentRoot.resolve('my-file.txt')).write 'Initial content'
 

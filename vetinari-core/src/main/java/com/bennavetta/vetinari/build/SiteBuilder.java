@@ -19,14 +19,18 @@ import com.bennavetta.vetinari.Site;
 import com.bennavetta.vetinari.VetinariContext;
 import com.bennavetta.vetinari.VetinariException;
 import com.bennavetta.vetinari.parse.SiteLoader;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.inject.Singleton;
+
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Build a site by applying {@link BuildPhase}s in order.
@@ -57,11 +61,11 @@ public class SiteBuilder
 	{
 		Site site = siteLoader.load(context);
 
-		List<BuildPhase> orderedPhases = Lists.newArrayList(phases);
-		Collections.sort(orderedPhases, (a, b) -> Integer.compare(a.getOrder(), b.getOrder()));
-		log.debug("Build Phases: {}", orderedPhases);
+		List<BuildPhase> runList = context.getSiteConfig().getStringList("phases").stream()
+			.map(name -> Iterables.find(phases, phase -> name.equals(phase.getName())))
+			.collect(Collectors.toList());
 
-		for(BuildPhase phase : orderedPhases)
+		for(BuildPhase phase : runList)
 		{
 			log.info("Running phase {}", phase.getName());
 			site = phase.process(site);

@@ -36,12 +36,6 @@ public class LayoutPhase implements BuildPhase
 	}
 
 	@Override
-	public int getOrder()
-	{
-		return BuildPhase.ORDER_LAYOUT;
-	}
-
-	@Override
 	public Site process(Site input)
 	{
 		return input.transformPages(page -> {
@@ -49,5 +43,11 @@ public class LayoutPhase implements BuildPhase
 			final ImmutableMap<String, Object> variables = ImmutableMap.of("site", input, "page", page, "content", page.getContent());
 			return page.withContent(layout.render(variables));
 		});
+	}
+
+	@Override
+	public String getName()
+	{
+		return "layout";
 	}
 }

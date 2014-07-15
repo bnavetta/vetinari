@@ -20,9 +20,11 @@ import com.bennavetta.vetinari.Site;
 import com.bennavetta.vetinari.VetinariContext;
 import com.bennavetta.vetinari.VetinariException;
 import com.bennavetta.vetinari.build.BuildPhase;
+
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,12 +45,6 @@ public class DefaultOutputPhase implements BuildPhase
 	}
 
 	@Override
-	public int getOrder()
-	{
-		return BuildPhase.ORDER_OUTPUT;
-	}
-
-	@Override
 	public Site process(Site site) throws VetinariException
 	{
 		try
@@ -65,5 +61,11 @@ public class DefaultOutputPhase implements BuildPhase
 		{
 			throw new VetinariException("Unable to write output file", e);
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "defaultOutput";
 	}
 }

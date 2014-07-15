@@ -25,18 +25,12 @@ import com.bennavetta.vetinari.VetinariException;
 
 public interface BuildPhase
 {
-	public static final int ORDER_TEMPLATE = 200;
-	public static final int ORDER_RENDER = 400;
-	public static final int ORDER_LAYOUT = 600;
-	public static final int ORDER_OUTPUT = 800;
-
 	/**
-	 * Returns the order in which this step is to be run. For reference, constants are defined for built-in phases.
-	 * Phase ordering is defined numerically instead of through dependencies since an absolute positioning is somewhat
-	 * easier to understand in this case. Each phase is a function of the previous, and thus of all phases prior to it,
-	 * so a numerical order is sort of like having a dependency on each phase that conceptually should run first.
+	 * Each build phase has a unique name. This name is used in the site configuration file to determine
+	 * which phases to run. 
+	 * @return the phase name
 	 */
-	public int getOrder();
+	public String getName();
 
 	/**
 	 * Process the site. Sites and pages can be seen as
@@ -48,15 +42,4 @@ public interface BuildPhase
 	 * @throws VetinariException if there is a problem processing the site
 	 */
 	public Site process(Site input) throws VetinariException;
-
-	/**
-	 * Returns the display name of this phase. By default it is the simple class name without the {@code Phase}
-	 * suffix if present.
-	 * @see Class#getSimpleName()
-	 */
-	default String getName() //NOSONAR
-	{
-		String baseName = getClass().getSimpleName();
-		return baseName.endsWith("Phase") ? baseName.substring(0, baseName.length() - 5) : baseName;
-	}
 }
