@@ -11,6 +11,7 @@ buildscript {
 	dependencies {
 		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:latest.release'
 		classpath 'com.netflix.nebula:nebula-plugin-plugin:latest.release'
+		classpath 'com.netflix.nebula:gradle-git-scm-plugin:latest.release'
 		classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:latest.release' // For snapshots
 		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:latest.release' // For releases
 		classpath 'com.github.townsfolk:gradle-release:latest.release'
