@@ -1,3 +1,7 @@
+allprojects {
+	ext.deps = new ConfigSlurper().parse(rootProject.file('config/dependencies.groovy').toURI().toURL())
+}
+
 subprojects {
 	repositories {
 		jcenter()
@@ -6,6 +10,8 @@ subprojects {
 	}
 
 	dependencies {
-		testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+		testCompile(deps.libs.spock) {
+			exclude group: 'org.codehaus.groovy'
+		}
 	}
 }

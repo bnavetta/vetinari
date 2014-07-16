@@ -1,7 +1,7 @@
 description 'Gradle plugin for Vetinari builds'
 
 dependencies {
-	compile 'com.google.guava:guava:17+'
+	compile deps.libs.guava
 
 	compile gradleApi()
 }

@@ -4,11 +4,12 @@ description 'Command-line interface for Vetinari'
 
 dependencies {
 	compile project(':vetinari-core')
-	compile 'com.beust:jcommander:latest.integration'
+	compile deps.libs.jcommander
 
-	compile 'org.apache.logging.log4j:log4j-core:latest.integration'
-	compile 'org.apache.logging.log4j:log4j-api:latest.integration'
-	compile 'org.apache.logging.log4j:log4j-slf4j-impl:latest.integration'
+	compile deps.libs.log4j.core
+	compile deps.libs.log4j.api
+	compile deps.libs.log4j.slf4j
+	compile deps.libs.slf4j.api
 }
 
 apply plugin: 'application'

@@ -6,19 +6,19 @@ configurations {
 description 'Core implementation of Vetinari'
 
 dependencies {
-	compile 'com.google.inject:guice:4.0-beta4+'
-	compile 'com.google.inject.extensions:guice-multibindings:4.0-beta4+'
+	compile deps.libs.guice
+	compile deps.libs.guiceMultibindings
 
-	compile 'com.google.guava:guava:17+'
-	compile 'com.typesafe:config:1.2.1+'
-	compile 'org.slf4j:slf4j-api:1.7+'
+	compile deps.libs.guava
+	compile deps.libs.typesafeConfig
+	compile deps.libs.slf4j.api
 
-	compile "org.codehaus.groovy:groovy-all:2.3+"
+	compile deps.libs.groovy
 
-	provided 'org.projectlombok:lombok:latest.release'
+	provided deps.libs.lombok
 
-	testCompile 'com.google.jimfs:jimfs:latest.release'
-	testCompile 'org.slf4j:slf4j-simple:1.7+'
+	testCompile deps.libs.jimfs
+	testCompile deps.libs.slf4j.simple
 }
 
 //jacoco {

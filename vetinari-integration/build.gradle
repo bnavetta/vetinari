@@ -7,5 +7,5 @@ configurations {
 
 dependencies {
 	compile project(':vetinari-core')
-	provided 'org.pegdown:pegdown:+'
+	provided deps.libs.pegdown
 }
