@@ -1,4 +1,5 @@
 allprojects {
+	apply plugin: 'gradle-dependency-lock'
 	ext.deps = new ConfigSlurper().parse(rootProject.file('config/dependencies.groovy').toURI().toURL())
 }
 
