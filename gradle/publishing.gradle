@@ -59,6 +59,35 @@ allprojects {
 
 	bintrayUpload.dependsOn publish
 	artifactoryPublish.dependsOn publish
+
+	afterEvaluate {
+		publishing.publications.withType(MavenPublication) { pub ->
+			pom.withXml {				
+				asNode().dependencies.'*'.findAll() { depNode ->
+					def groupId = depNode.groupId.text()
+					def artifactId = depNode.artifactId.text()
+					def configuration = project.configurations.find {
+						it.dependencies.any { // not allDependencies because that looks at extended configurations
+							it.group == groupId && it.name == artifactId
+						}
+					}
+
+					def dependency = project.configurations.collect { it.resolvedConfiguration.resolvedArtifacts }.flatten().find {
+						def id = it.moduleVersion.id
+						id.group == groupId && id.name == artifactId
+					}
+
+					def mavenScope = [runtime: 'runtime',
+						compile: 'compile',
+						testCompile: 'test',
+						testRuntime: 'test',
+						provided: 'provided'].get(configuration.name)
+					depNode.scope*.value = mavenScope
+					depNode.version*.value = dependency.moduleVersion.id.version
+				}
+			}
+		}
+	}
 }
 
 artifactoryPublish.skip = true
