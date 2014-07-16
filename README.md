@@ -91,5 +91,4 @@ The `--verbose` and `--debug` flags can be used for more output.
 ## Roadmap / TODO
 
 * Rename `vetinari-integration` to `vetinari-impl` and move **all** implementations of core interfaces there. It should also be a dependency of `vetinari-cli`.
-* Add a subproject for integration tests that can run both Gradle and CLI projects
 * Add a `BuildPhase` implementation for phases that just process each page individually

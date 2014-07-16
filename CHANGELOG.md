@@ -1,5 +1,11 @@
 # 0.4.1
 
+* Fix dependency scopes in Maven POMs
+* New integration test suite
+* Use more specific dependency versions
+* Use the Nebula dependency locking mechanism
+* Fix bug in new OutputPhase where parent directories were not created
+
 # 0.4.0
 
 * Added output path generation mechanism
@@ -19,7 +25,7 @@
 
 # 0.2.0
 
-* Preparation for general use 
+* Preparation for general use
 
 # 0.1.0
 
