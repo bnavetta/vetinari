@@ -1,5 +1,5 @@
 allprojects {
-	apply plugin: 'gradle-git-scm-plugin' // For commitLock
+	apply plugin: 'gradle-git-scm' // For commitLock
 	apply plugin: 'gradle-dependency-lock'
 	ext.deps = new ConfigSlurper().parse(rootProject.file('config/dependencies.groovy').toURI().toURL())
 }
