@@ -62,7 +62,7 @@ allprojects {
 
 	afterEvaluate {
 		publishing.publications.withType(MavenPublication) { pub ->
-			pom.withXml {				
+			pom.withXml {
 				asNode().dependencies.'*'.findAll() { depNode ->
 					def groupId = depNode.groupId.text()
 					def artifactId = depNode.artifactId.text()
