@@ -1,0 +1,12 @@
+{
+  "com.bennavetta.vetinari:vetinari-core": { "project": true },
+  "com.google.guava:guava": { "locked": "17.0", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "com.google.inject.extensions:guice-multibindings": { "locked": "4.0-beta4", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "com.google.inject:guice": { "locked": "4.0-beta4", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "com.typesafe:config": { "locked": "1.2.1", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "org.codehaus.groovy:groovy-all": { "locked": "2.3.5-SNAPSHOT", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "org.pegdown:pegdown": { "locked": "1.4.2", "requested": "1.+" },
+  "org.projectlombok:lombok": { "locked": "1.14.4", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "org.slf4j:slf4j-api": { "locked": "1.7.7", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "org.spockframework:spock-core": { "locked": "0.7-groovy-2.0", "requested": "0.7-groovy-2.0" }
+}

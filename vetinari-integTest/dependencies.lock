@@ -1,0 +1,3 @@
+{
+  "org.spockframework:spock-core": { "locked": "0.7-groovy-2.0", "requested": "0.7-groovy-2.0" }
+}

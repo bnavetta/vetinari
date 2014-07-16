@@ -1,0 +1,12 @@
+{
+  "com.google.guava:guava": { "locked": "17.0", "requested": "17.+" },
+  "com.google.inject.extensions:guice-multibindings": { "locked": "4.0-beta4", "requested": "4.+" },
+  "com.google.inject:guice": { "locked": "4.0-beta4", "requested": "4.+" },
+  "com.google.jimfs:jimfs": { "locked": "1.0", "requested": "1.+" },
+  "com.typesafe:config": { "locked": "1.2.1", "requested": "1.+" },
+  "org.codehaus.groovy:groovy-all": { "locked": "2.3.5-SNAPSHOT", "requested": "2.3.+" },
+  "org.projectlombok:lombok": { "locked": "1.14.4", "requested": "1.+" },
+  "org.slf4j:slf4j-api": { "locked": "1.7.7", "requested": "1.7.+" },
+  "org.slf4j:slf4j-simple": { "locked": "1.7.7", "requested": "1.7.+" },
+  "org.spockframework:spock-core": { "locked": "0.7-groovy-2.0", "requested": "0.7-groovy-2.0" }
+}
