@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 Ben Navetta
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.bennavetta.vetinari.test
 
 import com.bennavetta.vetinari.cli.VetinariMain
@@ -28,7 +43,11 @@ class TestSite
 	{
 		Path sourcePath = Paths.get(Resources.getResource(sourceName).toURI())
 		Files.walk(sourcePath).forEach({ Path path ->
-			Files.copy(path, buildRoot.resolve(sourcePath.relativize(path)))
+			// Don't copy the source root, since it already exists as the destination root
+			if(path != sourcePath)
+			{
+				Files.copy(path, buildRoot.resolve(sourcePath.relativize(path)))
+			}
 		})
 
 		this.root = buildRoot
@@ -56,8 +75,10 @@ class TestSite
 		AntBuilder ant = new AntBuilder()
 		// TODO: code coverage with fork
 		ant.java(classname: VetinariMain.name, fork: true, clonevm: true) {
-			['--content-root', contentRoot, '--template-root', templateRoot,
-			 '--output-root', outputRoot, '--site-config', siteConfigPath].each {
+			['build',
+		        '--content-root', contentRoot, '--template-root', templateRoot,
+		        '--output-root', outputRoot, '--site-config', siteConfigPath
+			].each {
 				arg value: it
 			}
 		}
