@@ -1,0 +1,12 @@
+dependencies {
+	integTestCompile 'org.codehaus.groovy:groovy-all:2.3.+'
+
+	integTestCompile 'com.google.guava:guava:17.+'
+	integTestCompile project(':vetinari-core')
+	integTestCompile project(':vetinari-integration')
+	integTestCompile project(':vetinari-cli')
+
+	integTestCompile 'org.apache.ant:ant:1.9.+'
+
+//	integTestCompile project(':vetinari-gradle') // It pulls in Gradle dependencies like Groovy
+}

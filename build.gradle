@@ -28,6 +28,7 @@ subprojects {
 	apply plugin: 'license'
 	apply plugin: 'jacoco'
 	apply plugin: 'groovy'
+	apply plugin: 'nebula-integtest'
 
 
 	contacts {
@@ -65,6 +66,12 @@ subprojects {
 			// The license interferes with metadata parsing
 			licenseTask.exclude '**/*.html'
 			licenseTask.exclude '**/*.md'
+		}
+	}
+
+	idea {
+		module {
+			scopes.TEST.plus += [configurations.integTestRuntime]
 		}
 	}
 }
