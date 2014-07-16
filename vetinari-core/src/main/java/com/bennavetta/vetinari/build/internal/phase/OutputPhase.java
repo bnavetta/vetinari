@@ -56,6 +56,7 @@ public class OutputPhase implements BuildPhase
 			{
 				Path outputPath = context.getOutputRoot().resolve(page.getMetadata().getString("outputPath"));
 				log.info("Writing {} to {}", page, outputPath);
+				Files.createDirectories(outputPath.getParent());
 				Files.write(outputPath, page.getContent().getBytes(context.getContentEncoding()));
 			}
 		}
