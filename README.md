@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/roguePanda/vetinari.svg)](https://travis-ci.org/roguePanda/vetinari)
+
 [ ![Download](https://api.bintray.com/packages/ben-navetta/maven/vetinari/images/download.png) ](https://bintray.com/ben-navetta/maven/vetinari/_latestVersion)
 
 # Vetinari
