@@ -1,5 +1,7 @@
 # 0.4.2
 
+* added `Site.getPageMap()`
+
 # 0.4.1
 
 * Fix dependency scopes in Maven POMs

@@ -61,6 +61,16 @@ public class Site
 	}
 
 	/**
+	 * Returns a mapping of path names to pages.
+	 * @see #getPage(String)
+	 * @see #getPages()
+	 */
+	public ImmutableMap<String, Page> getPageMap()
+	{
+		return pages;
+	}
+
+	/**
 	 * Returns the site title, as specified in the site configuration file under the {@code title} property.
 	 */
 	public String getTitle()
