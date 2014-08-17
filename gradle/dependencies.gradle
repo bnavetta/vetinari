@@ -9,6 +9,7 @@ subprojects {
 		jcenter()
 		mavenCentral()
 		maven { url 'http://oss.jfrog.org/artifactory/repo' }
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots'}
 	}
 
 	dependencies {

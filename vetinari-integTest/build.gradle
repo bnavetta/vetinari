@@ -1,12 +1,12 @@
 description 'Integration Tests'
 
 dependencies {
-	integTestCompile deps.libs.groovy
+	testCompile deps.libs.groovy
 
-	integTestCompile deps.libs.guava
-	integTestCompile project(':vetinari-core')
-	integTestCompile project(':vetinari-integration')
-	integTestCompile project(':vetinari-cli')
+	testCompile deps.libs.guava
+	testCompile project(':vetinari-core')
+	testCompile project(':vetinari-integration')
+	testCompile project(':vetinari-cli')
 
-	integTestCompile deps.libs.ant
+	testCompile deps.libs.ant
 }

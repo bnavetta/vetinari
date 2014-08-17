@@ -15,7 +15,7 @@ allprojects {
 		project.ext.bintrayKey = credentials[1]
 	}
 
-	apply plugin: 'com.jfrog.artifactory-publish'
+	apply plugin: 'com.jfrog.artifactory'
 	apply plugin: 'com.jfrog.bintray'
 	apply plugin: 'maven-publish'
 	apply plugin: 'nebula-publishing'

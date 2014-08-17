@@ -92,3 +92,4 @@ The `--verbose` and `--debug` flags can be used for more output.
 
 * Rename `vetinari-integration` to `vetinari-impl` and move **all** implementations of core interfaces there. It should also be a dependency of `vetinari-cli`.
 * Add a `BuildPhase` implementation for phases that just process each page individually
+* Use more Nebula plugins instead of custom logic, i.e. for optional dependencies and Bintray publishing

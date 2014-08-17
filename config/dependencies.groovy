@@ -18,7 +18,8 @@ versions {
 	pegdown        = '1.+'
 
 	// Testing
-	spock          = '0.7-groovy-2.0'
+//	spock          = '0.7-groovy-2.0'
+	spock          = '1.0-groovy-2.3-SNAPSHOT'
 	jimfs          = '1.+'
 
 	lombok         = '1.+'
