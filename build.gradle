@@ -19,6 +19,7 @@ buildscript {
 		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:latest.release' // For releases
 		classpath 'com.github.townsfolk:gradle-release:latest.release'
 		classpath 'com.github.jengelman.gradle.plugins:shadow:latest.release'
+		classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:latest.release'
 	}
 
 	configurations {
@@ -30,6 +31,8 @@ buildscript {
 allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
+
+	apply plugin: 'com.github.kt3k.coveralls'
 }
 
 subprojects {
