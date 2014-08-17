@@ -1,10 +1,11 @@
 allprojects {
 	apply plugin: 'gradle-git-scm' // For commitLock
-	apply plugin: 'gradle-dependency-lock'
 	ext.deps = new ConfigSlurper().parse(rootProject.file('config/dependencies.groovy').toURI().toURL())
 }
 
 subprojects {
+	apply plugin: 'gradle-dependency-lock'
+
 	repositories {
 		jcenter()
 		mavenCentral()
