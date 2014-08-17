@@ -1,3 +1,19 @@
 {
-  "org.spockframework:spock-core": { "locked": "0.7-groovy-2.0", "requested": "0.7-groovy-2.0" }
+  "com.bennavetta.vetinari:vetinari-cli": { "project": true },
+  "com.bennavetta.vetinari:vetinari-core": { "project": true, "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-integration", "com.bennavetta.vetinari:vetinari-cli" ] },
+  "com.bennavetta.vetinari:vetinari-integration": { "project": true },
+  "com.beust:jcommander": { "locked": "1.35", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-cli" ] },
+  "com.google.guava:guava": { "locked": "17.0", "requested": "17.+", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "com.google.inject.extensions:guice-multibindings": { "locked": "4.0-beta4", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "com.google.inject:guice": { "locked": "4.0-beta4", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "com.typesafe:config": { "locked": "1.2.1", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "org.apache.ant:ant": { "locked": "1.9.4", "requested": "1.9.+" },
+  "org.apache.logging.log4j:log4j-api": { "locked": "2.0.1", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-cli" ] },
+  "org.apache.logging.log4j:log4j-core": { "locked": "2.0.1", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-cli" ] },
+  "org.apache.logging.log4j:log4j-slf4j-impl": { "locked": "2.0.1", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-cli" ] },
+  "org.codehaus.groovy:groovy-all": { "locked": "2.3.7-SNAPSHOT", "requested": "2.3.+", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "org.pegdown:pegdown": { "locked": "1.4.2", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-integration" ] },
+  "org.projectlombok:lombok": { "locked": "1.14.4", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core" ] },
+  "org.slf4j:slf4j-api": { "locked": "1.7.7", "firstLevelTransitive": [ "com.bennavetta.vetinari:vetinari-core", "com.bennavetta.vetinari:vetinari-cli" ] },
+  "org.spockframework:spock-core": { "locked": "1.0-groovy-2.3-SNAPSHOT", "requested": "1.0-groovy-2.3-SNAPSHOT" }
 }
