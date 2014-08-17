@@ -70,14 +70,6 @@ subprojects {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 
-	project.afterEvaluate { project ->
-		project.tasks.withType(License).each { licenseTask ->
-			// The license interferes with metadata parsing
-			licenseTask.exclude '**/*.html'
-			licenseTask.exclude '**/*.md'
-		}
-	}
-
 	idea {
 		module {
 			scopes.TEST.plus += [configurations.integTestCompile]

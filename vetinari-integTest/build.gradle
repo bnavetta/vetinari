@@ -10,3 +10,9 @@ dependencies {
 
 	testCompile deps.libs.ant
 }
+
+afterEvaluate {
+	tasks.withType(nl.javadude.gradle.plugins.license.License) { task ->
+		enabled = false
+	}
+}
