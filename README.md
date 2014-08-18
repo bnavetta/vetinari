@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/roguePanda/vetinari.svg)](https://travis-ci.org/roguePanda/vetinari)
-
-[ ![Download](https://api.bintray.com/packages/ben-navetta/maven/vetinari/images/download.png) ](https://bintray.com/ben-navetta/maven/vetinari/_latestVersion)
+[![Coverage Status](https://img.shields.io/coveralls/roguePanda/vetinari.svg)](https://coveralls.io/r/roguePanda/vetinari?branch=master)
+[![Download](https://api.bintray.com/packages/ben-navetta/maven/vetinari/images/download.png) ](https://bintray.com/ben-navetta/maven/vetinari/_latestVersion)
 
 # Vetinari
 
